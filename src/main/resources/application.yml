@@ -1,0 +1,25 @@
+spring:
+  application:
+  name: ribbon
+
+  profiles:
+    include:
+      - secret
+
+    jpa:
+      properties:
+        hibernate:
+          show_sql: true
+          format_sql: true
+
+      hibernate:
+        ddl-auto: update
+
+      defer-datasource-initialization: true # ????? 2.5 ???? ?? sql ??? ??? ???
+
+    datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver # cj? ?????
+
+    sql: # ?? ??????? sql ????? ????
+      init:
+        mode: always
