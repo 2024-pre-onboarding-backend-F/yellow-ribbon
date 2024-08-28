@@ -1,0 +1,44 @@
+package wanted.ribbon.store.domain;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Getter
+@Table(name = "stores", uniqueConstraints = {
+        @UniqueConstraint(
+                name="STORENAME_ADDRESS_UNIQUE",
+                columnNames={"STORENAME","ADDRESS"}
+        )})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
+public class Store {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
+    private Long storeId;
+
+    @Column(nullable = false)
+    private String sigun;
+
+    @Column(nullable = false, unique = true)
+    private String storeName;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Category cateogry;
+
+    @Column(nullable = false)
+    private String address;
+
+    @Column(nullable = false)
+    private double storeLat;
+
+    @Column(nullable = false)
+    private double storeLon;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
+}
