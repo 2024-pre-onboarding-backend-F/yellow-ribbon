@@ -27,7 +27,7 @@ public class Store {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Category cateogry;
+    private Category category;
 
     @Column(nullable = false)
     private String address;
@@ -37,8 +37,4 @@ public class Store {
 
     @Column(nullable = false)
     private double storeLon;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "city_id", nullable = false)
-    private City city;
 }
