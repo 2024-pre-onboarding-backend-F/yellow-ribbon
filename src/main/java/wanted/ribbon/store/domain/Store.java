@@ -22,7 +22,7 @@ public class Store {
     @Column(nullable = false)
     private String sigun;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String storeName;
 
     @Enumerated(EnumType.STRING)
@@ -37,4 +37,7 @@ public class Store {
 
     @Column(nullable = false)
     private double storeLon;
+
+    @Column(nullable = false, columnDefinition = "double default 0")
+    private double rating;
 }
