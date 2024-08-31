@@ -37,4 +37,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErrorResponse(e.getErrorCode(), e.getErrorCode().getMessage()));
     }
+    // 데이터파이프
+    @ExceptionHandler(GenrestrtException.class)
+    public ResponseEntity<ErrorResponse> handleGenrestrtException(GenrestrtException e) {
+        return ResponseEntity.status(e.getErrorCode().getStatus())
+                .body(new ErrorResponse(e.getErrorCode(), e.getErrorCode().getMessage()));
+    }
 }
