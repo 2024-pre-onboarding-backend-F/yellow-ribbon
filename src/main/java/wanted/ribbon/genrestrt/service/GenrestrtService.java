@@ -122,11 +122,11 @@ public class GenrestrtService {
                 throw new GenrestrtException(ErrorCode.GENRESTRT_UNKNOWN_SERVICE, String.format("Unknown service name: %s", serviceName));
         }
 
-        // 유효한 데이터가 없는 경우 예외 처리
+        // 3. 유효한 데이터가 없는 경우 예외 처리
         if (rows.isEmpty()) {
             throw new GenrestrtException(ErrorCode.GENRESTRT_NO_VALID_ROWS, String.format("No valid rows found for service: %s", serviceName));
         }
-
+        // 4. 최종적으로 추출된 리스트 반환
         return rows;
     }
 
@@ -136,14 +136,15 @@ public class GenrestrtService {
      * @return 유효한 항목 리스트
      */
     private List<GenrestrtApiResponse.Row> extractRows(Object responses) {
+        // 1. API 응답값이 null인 경우 빈 리스트 반환
         if (responses == null) {
             return Collections.emptyList();
         }
-
+        // 2-1. API 응답값이 List 타입인지 확인하고, 그렇다면 각 항목에서 행을 추출합니다.
         if (responses instanceof List<?>) {
             return ((List<?>) responses).stream()
                     .flatMap(response -> {
-                        // 응답 객체에 따라 데이터 항목을 추출
+                        // 2-2. 응답 객체에 따라 데이터 항목을 추출
                         if (response instanceof GenrestrtApiResponse.Genrestrtchifood) {
                             return Optional.ofNullable(((GenrestrtApiResponse.Genrestrtchifood) response).getRow())
                                     .orElse(Collections.emptyList())
