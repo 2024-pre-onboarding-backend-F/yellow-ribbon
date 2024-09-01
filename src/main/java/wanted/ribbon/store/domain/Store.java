@@ -40,4 +40,8 @@ public class Store {
 
     @Column(nullable = false, columnDefinition = "double default 0")
     private double rating;
+
+    public void updateRating(double rating) {
+        this.rating = rating;
+    }
 }
