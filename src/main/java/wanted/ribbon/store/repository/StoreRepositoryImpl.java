@@ -25,7 +25,6 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
         double minLon = lon - meterToDegree;
         double maxLon = lon + meterToDegree;
 
-        // orderBy는 거리순(distance), 평점순(rating) 2가지이며 default는 거리순이다.
         return queryFactory.selectFrom(store)
                 .where(store.storeLat.between(minLat, maxLat),
                         store.storeLon.between(minLon, maxLon),
@@ -34,6 +33,7 @@ public class StoreRepositoryImpl implements StoreRepositoryCustom {
                 .fetch();
     }
 
+    // orderBy는 거리순(distance), 평점순(rating) 2가지이며 default는 거리순이다.
     private OrderSpecifier<?> getOrderSpecifier(String orderBy, double lat, double lon) {
         if ("rating".equalsIgnoreCase(orderBy)) {
             return store.rating.desc();  // 평점순 정렬
