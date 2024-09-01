@@ -24,7 +24,7 @@ public class UserService {
                 .build()).getUserId();
     }
 
-    public User findById(UUID userId){
+    public User findByUserId(UUID userId){
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
     }
