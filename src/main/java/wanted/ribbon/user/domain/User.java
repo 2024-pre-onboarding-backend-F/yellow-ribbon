@@ -20,7 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
@@ -42,16 +42,19 @@ public class User implements UserDetails {
     private boolean recommend;
 
     @Builder
-    public User(String id, String password, String auth){
+    public User(UUID userId, String id, String password, double lat, double lon, boolean recommend) {
+        this.userId = userId;
         this.id = id;
         this.password = password;
+        this.lat = lat;
+        this.lon = lon;
+        this.recommend = recommend;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
         return List.of(new SimpleGrantedAuthority("user"));
     }
-
     // 사용자의 id를 반환(고유한 값)
     @Override
     public String getUsername(){

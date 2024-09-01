@@ -1,7 +1,6 @@
 package wanted.ribbon.user.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.web.server.Http2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,10 +23,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/user/**", "/login", "/signup").permitAll() // `antMatchers` 사용
                         .anyRequest().authenticated())
                 .formLogin(form -> form
-                        .loginPage("/login"))
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/login")
-                        .invalidateHttpSession(true));
+                        .loginPage("/login"));
         return http.build();
     }
 
@@ -35,7 +31,7 @@ public class WebSecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailService userDetailService) throws Exception{
         AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
-        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
         return auth.build();
     }
 
