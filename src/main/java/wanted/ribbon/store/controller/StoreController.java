@@ -16,9 +16,9 @@ import wanted.ribbon.store.service.StoreService;
 public class StoreController {
     private final StoreService storeService;
 
-    @GetMapping("/{StoreId}")
-    public ResponseEntity<StoreDetailResponseDto> getStoreDetail(@PathVariable Long StoreId) {
-        StoreDetailResponseDto responseDto = storeService.getStoreDetail(StoreId);
+    @GetMapping("/{storeId}")
+    public ResponseEntity<StoreDetailResponseDto> getStoreDetail(@PathVariable Long storeId) {
+        StoreDetailResponseDto responseDto = storeService.getStoreDetail(storeId);
         return ResponseEntity.ok().body(responseDto);
     }
 
