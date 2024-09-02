@@ -2,6 +2,7 @@ package wanted.ribbon.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import wanted.ribbon.user.domain.User;
 import wanted.ribbon.user.domain.RefreshToken;
 import wanted.ribbon.user.repository.RefreshTokenRepository;
 
@@ -9,6 +10,11 @@ import wanted.ribbon.user.repository.RefreshTokenRepository;
 @Service
 public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
+
+    public void saveRefreshToken(User user, String refreshToken) {
+        RefreshToken token = new RefreshToken(user, refreshToken);
+        refreshTokenRepository.save(token);
+    }
 
     public RefreshToken findByRefreshToken(String refreshToken){
         return refreshTokenRepository.findByRefreshToken(refreshToken)

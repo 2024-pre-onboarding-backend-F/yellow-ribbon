@@ -2,10 +2,7 @@ package wanted.ribbon.user.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +13,7 @@ import java.util.UUID;
 
 @Table(name="users")
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User implements UserDetails {
@@ -29,7 +27,7 @@ public class User implements UserDetails {
     private String id;
 
     @Column(name = "password")
-    @Size(max=200)
+    @Size(max = 200)
     private String password;
 
     @Column(name = "user_lat")
@@ -38,7 +36,7 @@ public class User implements UserDetails {
     @Column(name= "user_lon")
     private double lon;
 
-    @Column
+    @Column(name = "recommend")
     private boolean recommend;
 
     @Builder
@@ -66,31 +64,23 @@ public class User implements UserDetails {
         return password;
     }
 
-    // 계정 만료 여부 반환
     @Override
     public boolean isAccountNonExpired(){
-        // 계정 잠금되었는지 확인하는 로직
-        return true; // true -> 만료되지 않았음
+        return true;
     }
 
-    // 계정 잠금 여부 반환
     @Override
     public boolean isAccountNonLocked(){
-        // 계정 잠금되었는지 확인하는 로직
-        return true; // true -> 잠금되지 않았음
+        return true;
     }
 
-    // 패스워드의 만료 여부 반환
     @Override
     public boolean isCredentialsNonExpired(){
-        // 패스워드가 만려되었는지 확인하는 로직
-        return true; // true -> 만료되지 않았음
+        return true;
     }
 
-    // 계정 사용 가능 여부 반환
     @Override
     public boolean isEnabled(){
-        // 계정이 사용 가능한지 확인하는 로직
-        return true; // true -> 사용 가능
+        return true;
     }
 }

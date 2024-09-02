@@ -5,8 +5,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -17,18 +15,15 @@ public class RefreshToken {
     @Column(name = "token_id", nullable = false)
     private Long tokenId;
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "user_id", nullable = false, unique = true)
-    //@JoinColumn(name = "user_id", nullable = false)
-    private UUID userId;
-//    private User user;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(name = "refresh_token", nullable = false)
     private String refreshToken;
 
-    public RefreshToken(UUID userId, String refreshToken){
-        this.userId = userId;
+    public RefreshToken(User user, String refreshToken){
+        this.user = user;
         this.refreshToken = refreshToken;
     }
 
