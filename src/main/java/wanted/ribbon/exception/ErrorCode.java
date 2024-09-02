@@ -14,12 +14,13 @@ public enum ErrorCode {
     // @RequestBody의 입력 값이 유효하지 않을 때
     INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "파라미터 값을 확인해주세요."),
     ENTITY_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 엔티티입니다."),
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다."),;
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다."),
 
     // 사용자, jwt
 
 
     // 맛집
+    STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 맛집입니다.");
 
 
     // 맛집 상세
