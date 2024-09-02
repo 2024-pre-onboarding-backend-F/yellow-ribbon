@@ -13,7 +13,7 @@ import wanted.ribbon.user.service.TokenService;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class TokenApiController {
     private final TokenService tokenService;
 
