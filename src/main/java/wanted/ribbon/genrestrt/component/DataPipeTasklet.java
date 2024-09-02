@@ -36,7 +36,7 @@ public class DataPipeTasklet implements Tasklet {
         List<RawData> rawDataList; // 현재 페이지에서 조회된 RawData 리스트
         do {
             // genrestrts 테이블에서 영업 중인 데이터와 처리되지 않은 데이터를 페이지 단위로 조회
-            String sql = "SELECT sigun_nm, bizplc_nm, sanittn_bizcond_nm, refine_roadnm_addr, refine_wgs84lat, refine_wgs84logt " +
+            String sql = "SELECT sigun_nm, bizplc_nm, bsn_state_nm, sanittn_bizcond_nm, refine_roadnm_addr, refine_wgs84lat, refine_wgs84logt " +
                     "FROM genrestrts " +
                     "WHERE bsn_state_nm = '영업' AND processed = false " +
                     "LIMIT ? OFFSET ?";
