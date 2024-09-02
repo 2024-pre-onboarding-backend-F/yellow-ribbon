@@ -6,9 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import wanted.ribbon.store.dto.StoreResponseDto;
 import wanted.ribbon.store.dto.StoreDetailResponseDto;
 import wanted.ribbon.store.service.StoreService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/stores")
@@ -16,10 +20,23 @@ import wanted.ribbon.store.service.StoreService;
 public class StoreController {
     private final StoreService storeService;
 
+    @GetMapping
+    public ResponseEntity<List<StoreResponseDto>> getStoreList(@RequestParam(value = "lat") double lat,
+                                                               @RequestParam(value = "lon") double lon,
+                                                               @RequestParam(value = "range") double range,
+                                                               @RequestParam(value = "orderBy", defaultValue = "distance", required = false) String orderBy) {
+
+        List<StoreResponseDto> storeList = storeService.findStores(lat, lon, range, orderBy);
+
+        if (storeList.isEmpty())
+            return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok().body(storeList);
+    }
+
     @GetMapping("/{storeId}")
     public ResponseEntity<StoreDetailResponseDto> getStoreDetail(@PathVariable Long storeId) {
         StoreDetailResponseDto responseDto = storeService.getStoreDetail(storeId);
         return ResponseEntity.ok().body(responseDto);
     }
-
 }

@@ -5,6 +5,6 @@ import wanted.ribbon.store.domain.Store;
 
 import java.util.Optional;
 
-public interface StoreRepository extends JpaRepository<Store, Long> {
+public interface StoreRepository extends JpaRepository<Store, Long>, StoreRepositoryCustom  {
     Optional<Store> findByStoreId(Long StoreId);
 }
