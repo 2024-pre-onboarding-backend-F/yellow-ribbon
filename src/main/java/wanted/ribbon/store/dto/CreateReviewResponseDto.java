@@ -1,4 +1,4 @@
 package wanted.ribbon.store.dto;
 
-public record CreateReviewResponseDto(int score, String content) {
+public record CreateReviewResponseDto(String id, int score, String content) {
 }
