@@ -7,10 +7,7 @@ import wanted.ribbon.exception.ErrorCode;
 import wanted.ribbon.exception.NotFoundException;
 import wanted.ribbon.user.config.TokenProvider;
 import wanted.ribbon.user.domain.User;
-import wanted.ribbon.user.dto.SignUpUserRequest;
-import wanted.ribbon.user.dto.UpdateUserRequest;
-import wanted.ribbon.user.dto.UserLoginRequestDto;
-import wanted.ribbon.user.dto.UserLoginResponseDto;
+import wanted.ribbon.user.dto.*;
 import wanted.ribbon.user.repository.UserRepository;
 
 import java.time.Duration;
@@ -24,11 +21,17 @@ public class UserService {
     private final TokenProvider tokenProvider;   // TokenProvider를 사용
     private final TokenService tokenService;     // TokenService를 사용
 
-    public UUID save(SignUpUserRequest dto){
-        return userRepository.save(User.builder()
+    public SignUpResponse save(SignUpUserRequest dto){
+        User user = userRepository.save(User.builder()
                 .id(dto.getId())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword())) // 패스워드 암호화
-                .build()).getUserId();
+                .build());
+
+        return  new SignUpResponse(
+                "회원가입 성공",
+                user.getUserId(),
+                user.getId()
+        );
     }
 
     public User findByUserId(UUID userId){

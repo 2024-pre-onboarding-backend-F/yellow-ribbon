@@ -6,10 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import wanted.ribbon.user.domain.User;
-import wanted.ribbon.user.dto.SignUpUserRequest;
-import wanted.ribbon.user.dto.UpdateUserRequest;
-import wanted.ribbon.user.dto.UserLoginRequestDto;
-import wanted.ribbon.user.dto.UserLoginResponseDto;
+import wanted.ribbon.user.dto.*;
 import wanted.ribbon.user.service.UserService;
 
 import java.util.UUID;
@@ -21,8 +18,8 @@ public class UserApiController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<UUID> signUp(@Validated @RequestBody SignUpUserRequest request){
-        UUID response = userService.save(request);
+    public ResponseEntity<SignUpResponse> signUp(@Validated @RequestBody SignUpUserRequest request){
+        SignUpResponse response = userService.save(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
