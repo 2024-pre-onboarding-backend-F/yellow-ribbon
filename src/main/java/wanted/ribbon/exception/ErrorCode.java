@@ -32,7 +32,8 @@ public enum ErrorCode {
     GENRESTRT_INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "공공데이터 API 호출 중 오류가 발생했습니다."),
     GENRESTRT_EMPTY_RESPONSE(HttpStatus.NOT_FOUND, "API 데이터가 존재하지 않습니다."),
     GENRESTRT_NO_VALID_ROWS(HttpStatus.NOT_FOUND, "추출된 행이 없습니다."),
-    GENRESTRT_UNKNOWN_SERVICE(HttpStatus.NOT_FOUND, "요청한 서비스명이 아닙니다.");
+    GENRESTRT_UNKNOWN_SERVICE(HttpStatus.NOT_FOUND, "요청한 서비스명이 아닙니다."),
+    DATA_PIPE_TASKLET_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "데이터 처리에 오류가 발생했습니다.");
 
     private final HttpStatus status;
     private final String message;
