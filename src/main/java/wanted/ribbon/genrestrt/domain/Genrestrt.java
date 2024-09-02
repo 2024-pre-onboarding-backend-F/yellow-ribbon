@@ -10,7 +10,11 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // JPA를 위한 기본 생성자
 @AllArgsConstructor (access = AccessLevel.PRIVATE) // 모든 필드를 초기화하는 생성자
 @Builder
-@Table(name = "genrestrts")
+@Table(name = "genrestrts", uniqueConstraints = {
+        @UniqueConstraint(
+                name="BIZPLCNM_REFINEROADNMADDR_UNIQUE",
+                columnNames={"BIZPLCNM","REFINEROADNMADDR"}
+        )})
 public class Genrestrt {
 
     @Id
@@ -40,4 +44,7 @@ public class Genrestrt {
     private String refineZipCd; //소재지 우편번호
     private Double refineWgs84Lat; // WGS84위도
     private Double refineWgs84Logt; // WGS84경도
+
+    @Builder.Default
+    private Boolean processed = false; // 데이터 배치 처리 여부를 나타내는 필드
 }

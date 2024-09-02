@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import wanted.ribbon.exception.ErrorCode;
@@ -28,8 +29,10 @@ public class GenrestrtService {
     private final GenrestrtRepository genrestrtRepository;
     private final ObjectMapper objectMapper;
 
-    private final String baseUrl = "https://openapi.gg.go.kr";
-    private final String serviceKey = "4de6d887cc87485d8bbf242a03627fa4";
+    @Value("${spring.public-api.base-url}")
+    private String baseUrl;
+    @Value("${spring.public-api.service-key}")
+    private String serviceKey;
 
     // 데이터 가져오기를 위한 메인 메서드
     public void fetchData() {
@@ -210,6 +213,7 @@ public class GenrestrtService {
                 .refineZipCd(row.getRefineZipCd()) // 문자열 그대로 유지
                 .refineWgs84Lat(convertToDouble(row.getRefineWgs84Lat())) // 문자열을 Double로 변환
                 .refineWgs84Logt(convertToDouble(row.getRefineWgs84Logt())) // 문자열을 Double로 변환
+                .processed(false) // 초기 데이터 처리 상태 false
                 .build();
     }
 
