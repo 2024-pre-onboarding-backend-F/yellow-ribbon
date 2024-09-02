@@ -13,6 +13,7 @@ public class RawDataRowMapper implements RowMapper<RawData> {
         return RawData.builder()
                 .sigunNm(rs.getString("sigun_nm"))
                 .bizplcNm(rs.getString("bizplc_nm"))
+                .bsnStateNm(rs.getString("bsn_state_nm")) // 영업상태 추가
                 .sanittnBizcondNm(rs.getString("sanittn_bizcond_nm"))
                 .refineRoadnmAddr(rs.getString("refine_roadnm_addr"))
                 .refineWgs84Lat(rs.getDouble("refine_wgs84lat"))
