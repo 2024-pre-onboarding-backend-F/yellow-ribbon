@@ -19,17 +19,14 @@ public enum ErrorCode {
     // 사용자, jwt
 
 
-    // 맛집
-
+    // 맛집 목록
+    STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 맛집입니다."),
 
     // 맛집 상세
 
-
     // 평가
 
-
     // 데이터 파이프라인
-
     GENRESTRT_INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "API로 받은 응답이 없습니다."),
     GENRESTRT_PARSING_ERROR(HttpStatus.BAD_REQUEST, "API 응답을 파싱하는 데 실패했습니다."),
     GENRESTRT_INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "공공데이터 API 호출 중 오류가 발생했습니다."),
