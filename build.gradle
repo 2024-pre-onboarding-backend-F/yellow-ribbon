@@ -35,13 +35,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'io.jsonwebtoken:jjwt:0.9.1' // 자바 JWT 라이브러리
-	  implementation 'javax.xml.bind:jaxb-api:2.3.1' // XML 문서와 Java 객체 간 매핑 자동화
+    implementation 'javax.xml.bind:jaxb-api:2.3.1' // XML 문서와 Java 객체 간 매핑 자동화
     // Jackson
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     // Spring Batch
     implementation 'org.springframework.boot:spring-boot-starter-batch'
     // spring-batch-core 최신버전 추가
     implementation 'org.springframework.batch:spring-batch-core:5.1.0'
+    // Quartz
+    implementation 'org.springframework.boot:spring-boot-starter-quartz:3.2.3'
     // QueryDSL - 4개
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
