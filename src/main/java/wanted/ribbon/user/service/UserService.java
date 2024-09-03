@@ -1,5 +1,6 @@
 package wanted.ribbon.user.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -7,10 +8,7 @@ import wanted.ribbon.exception.ErrorCode;
 import wanted.ribbon.exception.NotFoundException;
 import wanted.ribbon.user.config.TokenProvider;
 import wanted.ribbon.user.domain.User;
-import wanted.ribbon.user.dto.SignUpUserRequest;
-import wanted.ribbon.user.dto.UpdateUserRequest;
-import wanted.ribbon.user.dto.UserLoginRequestDto;
-import wanted.ribbon.user.dto.UserLoginResponseDto;
+import wanted.ribbon.user.dto.*;
 import wanted.ribbon.user.repository.UserRepository;
 
 import java.time.Duration;
@@ -24,19 +22,34 @@ public class UserService {
     private final TokenProvider tokenProvider;   // TokenProvider를 사용
     private final TokenService tokenService;     // TokenService를 사용
 
-    public UUID save(SignUpUserRequest dto){
-        return userRepository.save(User.builder()
+    public SignUpResponse save(SignUpUserRequest dto){
+        User user = userRepository.save(User.builder()
                 .id(dto.getId())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword())) // 패스워드 암호화
-                .build()).getUserId();
+                .build());
+
+        return  new SignUpResponse(
+                "회원가입 성공",
+                user.getUserId(),
+                user.getId()
+        );
     }
 
-    public User findByUserId(UUID userId){
-        return userRepository.findById(userId)
+    public ProfileResponse findByUser(UUID userId, ProfileRequest request){
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
+
+        return new ProfileResponse(
+                "회원 조회 성공",
+                user.getId(),
+                user.getLat(),
+                user.getLon(),
+                user.isRecommend()
+        );
     }
 
-    public User updateUser(UUID userId, UpdateUserRequest request) {
+    @Transactional
+    public UpdateUserResponse updateUser(UUID userId, UpdateUserRequest request) {
         // 1. 유저 정보 조회
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
@@ -47,9 +60,19 @@ public class UserService {
         user.setRecommend(request.isRecommend());
 
         // 3. 변경된 유저 객체 저장
-        return userRepository.save(user);
+        User updatedUser = userRepository.save(user);
+
+        // 4. UpdateUserResponse 생성 및 반환
+        return new UpdateUserResponse(
+                "위도, 경도, 추천 여부 변경 완료",
+                user.getUserId(),
+                user.getLat(),
+                user.getLon(),
+                user.isRecommend()
+        );
     }
 
+    @Transactional
     public UserLoginResponseDto login(UserLoginRequestDto requestDto) {
         // 사용자 조회
         User user = userRepository.findById(requestDto.getId())
