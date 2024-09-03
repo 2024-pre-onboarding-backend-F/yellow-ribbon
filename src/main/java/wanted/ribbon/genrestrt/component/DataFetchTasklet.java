@@ -109,28 +109,19 @@ public class DataFetchTasklet implements Tasklet {
                           updateSql.append("category = ?, ");
                           updateParams.add(store.getCategory());
                       }
+                      /*
+                       * 1. 도로명 주소가 변경된 경우
+                       * 2. 위도, 경도 함께 변경된 경우가 많지 않을까?
+                       * 3. 도로명주소, 위도, 경도 같이 업데이트
+                       */
                       if (!existingStore.getAddress().equals(store.getAddress())) {
                           updateSql.append("address = ?, ");
                           updateParams.add(store.getAddress());
-                      }
-                      /*
-                      * Double 값의 경우 일치 여부 확인
-                      * 1. Math.abs를 이용하여 두 값의 차이를 비교
-                      * 2. EPSILON (허용 오차범위) 설정
-                      * */
-                      // EPSILON (허용 오차범위) 설정
-                      final double EPSILON = 0.00001;
-                      if ((Math.abs(existingStore.getStoreLat()-store.getStoreLat()) > EPSILON) ||
-                              (Math.abs(store.getStoreLat()-existingStore.getStoreLat()) > EPSILON)) {
-                          updateSql.append("store_lat = ?, ");
+                          updateSql.append("store_lat = ?, "); // 맛집 위도
                           updateParams.add(store.getStoreLat());
-                      }
-                      if ((Math.abs(existingStore.getStoreLon()-store.getStoreLon()) > EPSILON) ||
-                              (Math.abs(store.getStoreLon()-existingStore.getStoreLon()) > EPSILON)){
-                          updateSql.append("store_lon = ?, ");
+                          updateSql.append("store_lon = ?, "); // 맛집 경도
                           updateParams.add(store.getStoreLon());
                       }
-
                       // 변경된 필드가 있는 경우에만 업데이트 실행
                       if (!updateParams.isEmpty()) {
                           updateSql.setLength(updateSql.length()-2); // 마지막 필드 뒤의 쉼표 제거
@@ -141,7 +132,7 @@ public class DataFetchTasklet implements Tasklet {
                           int rowsFetched = jdbcTemplate.update(updateSql.toString(),updateParams.toArray());
 
                           if (rowsFetched > 0) {
-                              log.info("변경된 맛집: 이름={}, 주소={}", rawData.getBizplcNm(), rawData.getRefineRoadnmAddr());
+                              log.info("변경된 맛집: 이름={}, 도로명 주소={}", rawData.getBizplcNm(), rawData.getRefineRoadnmAddr());
                           }
                           totalRowsFetched += rowsFetched; // 총 변경 처리된 데이터 수 누적
                       }
