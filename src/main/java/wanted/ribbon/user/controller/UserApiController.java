@@ -5,11 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import wanted.ribbon.user.domain.User;
-import wanted.ribbon.user.dto.SignUpUserRequest;
-import wanted.ribbon.user.dto.UpdateUserRequest;
-import wanted.ribbon.user.dto.UserLoginRequestDto;
-import wanted.ribbon.user.dto.UserLoginResponseDto;
+import wanted.ribbon.user.dto.*;
 import wanted.ribbon.user.service.UserService;
 
 import java.util.UUID;
@@ -21,8 +17,8 @@ public class UserApiController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<UUID> signUp(@Validated @RequestBody SignUpUserRequest request){
-        UUID response = userService.save(request);
+    public ResponseEntity<SignUpResponse> signUp(@Validated @RequestBody SignUpUserRequest request){
+        SignUpResponse response = userService.save(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -34,14 +30,14 @@ public class UserApiController {
     }
 
     @GetMapping("/profile/{userId}")
-    public ResponseEntity<User> getUserInfo(@PathVariable UUID userId){
-        User user = userService.findByUserId(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+    public ResponseEntity<ProfileResponse> getUserInfo(@PathVariable UUID userId, @RequestBody ProfileRequest request){
+        ProfileResponse profile = userService.findByUser(userId, request);
+        return ResponseEntity.ok(profile);
     }
 
     @PutMapping("/settings/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable UUID userId, @RequestBody UpdateUserRequest request){
-        User updatedUser = userService.updateUser(userId, request);
+    public ResponseEntity<UpdateUserResponse> updateUser(@PathVariable UUID userId, @RequestBody UpdateUserRequest request){
+        UpdateUserResponse updatedUser = userService.updateUser(userId, request);
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 }
