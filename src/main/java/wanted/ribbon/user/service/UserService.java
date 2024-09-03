@@ -35,9 +35,17 @@ public class UserService {
         );
     }
 
-    public User findByUserId(UUID userId){
-        return userRepository.findById(userId)
+    public ProfileResponse findByUser(UUID userId, ProfileRequest request){
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
+
+        return new ProfileResponse(
+                "회원 조회 성공",
+                user.getId(),
+                user.getLat(),
+                user.getLon(),
+                user.isRecommend()
+        );
     }
 
     @Transactional

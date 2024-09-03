@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import wanted.ribbon.user.domain.User;
 import wanted.ribbon.user.dto.*;
 import wanted.ribbon.user.service.UserService;
 
@@ -31,9 +30,9 @@ public class UserApiController {
     }
 
     @GetMapping("/profile/{userId}")
-    public ResponseEntity<User> getUserInfo(@PathVariable UUID userId){
-        User user = userService.findByUserId(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+    public ResponseEntity<ProfileResponse> getUserInfo(@PathVariable UUID userId, @RequestBody ProfileRequest request){
+        ProfileResponse profile = userService.findByUser(userId, request);
+        return ResponseEntity.ok(profile);
     }
 
     @PutMapping("/settings/{userId}")
