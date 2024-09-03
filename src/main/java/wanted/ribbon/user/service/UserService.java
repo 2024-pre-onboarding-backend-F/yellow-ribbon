@@ -1,5 +1,6 @@
 package wanted.ribbon.user.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,8 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
     }
 
-    public User updateUser(UUID userId, UpdateUserRequest request) {
+    @Transactional
+    public UpdateUserResponse updateUser(UUID userId, UpdateUserRequest request) {
         // 1. 유저 정보 조회
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
@@ -50,9 +52,19 @@ public class UserService {
         user.setRecommend(request.isRecommend());
 
         // 3. 변경된 유저 객체 저장
-        return userRepository.save(user);
+        User updatedUser = userRepository.save(user);
+
+        // 4. UpdateUserResponse 생성 및 반환
+        return new UpdateUserResponse(
+                "위도, 경도, 추천 여부 변경 완료",
+                user.getUserId(),
+                user.getLat(),
+                user.getLon(),
+                user.isRecommend()
+        );
     }
 
+    @Transactional
     public UserLoginResponseDto login(UserLoginRequestDto requestDto) {
         // 사용자 조회
         User user = userRepository.findById(requestDto.getId())

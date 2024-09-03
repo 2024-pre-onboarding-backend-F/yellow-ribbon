@@ -37,8 +37,8 @@ public class UserApiController {
     }
 
     @PutMapping("/settings/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable UUID userId, @RequestBody UpdateUserRequest request){
-        User updatedUser = userService.updateUser(userId, request);
+    public ResponseEntity<UpdateUserResponse> updateUser(@PathVariable UUID userId, @RequestBody UpdateUserRequest request){
+        UpdateUserResponse updatedUser = userService.updateUser(userId, request);
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 }
