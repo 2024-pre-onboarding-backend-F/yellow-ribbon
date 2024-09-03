@@ -42,8 +42,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-batch'
     // spring-batch-core 최신버전 추가
     implementation 'org.springframework.batch:spring-batch-core:5.1.0'
-    // Quartz
-    implementation 'org.springframework.boot:spring-boot-starter-quartz:3.2.3'
     // QueryDSL - 4개
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
