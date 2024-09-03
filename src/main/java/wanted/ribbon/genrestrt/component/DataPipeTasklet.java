@@ -77,7 +77,7 @@ public class DataPipeTasklet implements Tasklet {
                 jdbcTemplate.update("UPDATE genrestrts SET processed = true WHERE bizplc_nm = ? AND refine_roadnm_addr = ?",
                         rawData.getBizplcNm(), rawData.getRefineRoadnmAddr());
 
-                log.info("데이터 삽입 성공 및 처리 상태 업데이트: {}", store);
+                log.info("데이터 삽입 성공 및 처리 상태 업데이트: {}", store); // 맛집 상세 정보를 받을 것인가?
                 count++; // 처리된 데이터 수 증가
             }
 
