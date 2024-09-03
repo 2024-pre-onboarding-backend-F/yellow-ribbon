@@ -1,6 +1,6 @@
 <div align="center">
 
-# Social-Network-Service
+# Yellow-Ribbon
 
 ### ✨ Backend TechStack ✨
 ![Java](https://img.shields.io/badge/-Java-FF7800?style=flat&logo=Java&logoColor=white)
