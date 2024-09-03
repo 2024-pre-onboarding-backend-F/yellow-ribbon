@@ -2,6 +2,7 @@ package wanted.ribbon.store.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import wanted.ribbon.user.domain.User;
 
 @Entity
 @Getter
@@ -24,4 +25,8 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

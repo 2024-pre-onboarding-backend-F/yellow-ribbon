@@ -60,10 +60,10 @@ public class TokenProvider {
         return new UsernamePasswordAuthenticationToken(new org.springframework.security.core.userdetails.User(claims.getSubject(), "", authorities), token, authorities);
     }
 
-    // 토큰 기반으로 유저 ID를 가져오는 메서드
-    public UUID getUserId(String token){
+    // 토큰 기반으로 회원의 ID를 가져오는 메서드
+    public String getId(String token){
         Claims claims = getClaims(token);
-        return claims.get("userId", UUID.class);
+        return claims.getSubject();
     }
 
     private Claims getClaims(String token){

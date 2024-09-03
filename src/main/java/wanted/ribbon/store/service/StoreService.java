@@ -26,7 +26,7 @@ public class StoreService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.STORE_NOT_FOUND));
         List<Review> reviewList = reviewRepository.findByStore_StoreId(storeId);
         List<ReviewListResponseDto> reviewListResponseDto = reviewList.stream()
-                .map(list -> new ReviewListResponseDto(list.getScore(), list.getContent()))
+                .map(list -> new ReviewListResponseDto(list.getUser().getId(), list.getScore(), list.getContent()))
                 .collect(Collectors.toList());
 
         StoreDetailResponseDto responseDto = new StoreDetailResponseDto(
