@@ -8,7 +8,7 @@ import wanted.ribbon.store.domain.Review;
 import wanted.ribbon.store.domain.Store;
 import wanted.ribbon.store.dto.ReviewListResponseDto;
 import wanted.ribbon.store.dto.StoreDetailResponseDto;
-import wanted.ribbon.store.dto.StoreResponseDto;
+import wanted.ribbon.store.dto.StoreListResponseDto;
 import wanted.ribbon.store.repository.ReviewRepository;
 import wanted.ribbon.store.repository.StoreRepository;
 
@@ -26,7 +26,7 @@ public class StoreService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.STORE_NOT_FOUND));
         List<Review> reviewList = reviewRepository.findByStore_StoreId(storeId);
         List<ReviewListResponseDto> reviewListResponseDto = reviewList.stream()
-                .map(list -> new ReviewListResponseDto(list.getScore(), list.getContent()))
+                .map(list -> new ReviewListResponseDto(list.getUser().getId(), list.getScore(), list.getContent()))
                 .collect(Collectors.toList());
 
         StoreDetailResponseDto responseDto = new StoreDetailResponseDto(
@@ -51,7 +51,7 @@ public class StoreService {
      * @param range   위도, 경도로 지정한 위치 주변의 검색할 범위 설정 값 (단위는 km이며, range 1.0은 1km이다.)
      * @param orderBy store 데이터 정렬 기준 (거리순과 평점순 2가지)
      */
-    public List<StoreResponseDto> findStores(double lat, double lon, double range, String orderBy) {
+    public StoreListResponseDto findStores(double lat, double lon, double range, String orderBy) {
         // 위도, 경도의 계산을 위해 km를 m로 변환
         double meterRange = range * 1000;
         // bbox를 구하는 4 모서리 좌표 계산에 활용하기 위해 반으로 나눔
@@ -60,7 +60,6 @@ public class StoreService {
         double meterToDegree = moveRange * 0.01 / 1100; // 0.01 : 1100 = meterToDegree : moveRange(몇 m)
 
         List<Store> storeList = storeRepository.findAllStores(lat, lon, meterToDegree, meterRange, orderBy);
-        List<StoreResponseDto> storeListDto = storeList.stream().map(StoreResponseDto::from).collect(Collectors.toList());
-        return storeListDto;    
+        return StoreListResponseDto.fromStoreList(storeList);
     }
 }
