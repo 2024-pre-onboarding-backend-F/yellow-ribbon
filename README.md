@@ -352,8 +352,9 @@ src
 <summary> 데이터 수집 과정 </summary>
 <div markdown="1">
 
-<div> 
+<div>
 
+### 🛒 데이터 수집 과정
 ### 기능 요구사항
   - API가 아닌 별도 프로그래밍 된 프로세스입니다.
   
@@ -409,6 +410,7 @@ URL: /api/genrestrts/fetch-data?serviceName=서비스이름
 
 <div> 
 
+### 💾 데이터 전처리 및 저장
 ### 기능 요구사항
   - 운영 테이블 형식에 맞춰 데이터를 가공합니다.
   - 원본 데이터에서 null 값은 디폴트 값으로 설정합니다.
@@ -464,6 +466,7 @@ Job: [SimpleJob: [name=dataPipeJob]] completed with the following parameters: [{
 
 <div> 
 
+### 🔁 데이터 자동화
 ### 기능 요구사항
   - `스케쥴러`를 설정하여 위 로직을 지정한 시간마다 실행시킵니다.
   - 매주 월요일 새벽 3시에 실행
@@ -534,6 +537,7 @@ Job: [SimpleJob: [name=dataPipeJob]] completed with the following parameters: [{
 
 <div> 
 
+### 🗒️ 시군구 목록
 ### 기능 요구사항
   - 시군구 모든 목록을 반환한다.
   - `시도` , `시군구` 로 지역 조회 기능에 사용된다.
@@ -582,6 +586,7 @@ URL : /api/city
 
 <div> 
 
+### 📖 맛집 상세정보
 ### 기능 요구사항
   - `맛집 모든필드` 를 포함한다.
   - 해당 맛집의 `평가` 상세 리스트도 포함한다.
@@ -648,6 +653,7 @@ Authorization: “Bearer XXXXXXXXX”
 
 <div> 
 
+### 📝 맛집 평가 생성
 ### 기능 요구사항
   - `유저` 가 특정 `맛집` 에 평가를 한다.
   - `평가` 가 생성되면, 해당 맛집의 `평점` 을 업데이트 한다.
@@ -710,6 +716,7 @@ Authorization: “Bearer XXXXXXXXX”
 
 <div> 
 
+### 🧭 위치 기반 맛집 목록 조회
 ### 기능 요구사항
   - 위도(lat), 경도(lon)로 설정된 사용자의 위치에서 주어진 범위(range) 만큼의 맛집 목록을 정렬 기준에 따라 정렬하여 반환한다.
   - 정렬 기준
