@@ -1,8 +1,8 @@
-package wanted.ribbon.genrestrt.service;
+package wanted.ribbon.datapipe.service;
 
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
-import wanted.ribbon.genrestrt.dto.RawData;
+import wanted.ribbon.datapipe.dto.RawData;
 import wanted.ribbon.store.domain.Category;
 import wanted.ribbon.store.domain.Store;
 

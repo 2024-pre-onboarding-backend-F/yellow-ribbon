@@ -1,4 +1,4 @@
-package wanted.ribbon.genrestrt.dto;
+package wanted.ribbon.datapipe.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

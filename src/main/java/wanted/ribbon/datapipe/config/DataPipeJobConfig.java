@@ -1,4 +1,4 @@
-package wanted.ribbon.genrestrt.config;
+package wanted.ribbon.datapipe.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
-import wanted.ribbon.genrestrt.component.DataFetchTasklet;
-import wanted.ribbon.genrestrt.component.DataPipeTasklet;
+import wanted.ribbon.datapipe.component.DataFetchTasklet;
+import wanted.ribbon.datapipe.component.DataPipeTasklet;
 
 @RequiredArgsConstructor
 @Configuration

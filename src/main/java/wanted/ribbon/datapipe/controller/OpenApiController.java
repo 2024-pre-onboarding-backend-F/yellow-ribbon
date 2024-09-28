@@ -1,15 +1,15 @@
-package wanted.ribbon.genrestrt.controller;
+package wanted.ribbon.datapipe.controller;
 
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import wanted.ribbon.genrestrt.service.GenrestrtService;
+import wanted.ribbon.datapipe.service.GenrestrtService;
 
 @RestController
 @RequestMapping("/api/genrestrts")
 @RequiredArgsConstructor
-public class GenrestrtController {
+public class OpenApiController {
     private final GenrestrtService genrestrtService;
 
     // 경기도 맛집 데이터 수집 API

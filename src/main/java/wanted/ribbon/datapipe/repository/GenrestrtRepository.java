@@ -1,7 +1,7 @@
-package wanted.ribbon.genrestrt.repository;
+package wanted.ribbon.datapipe.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import wanted.ribbon.genrestrt.domain.Genrestrt;
+import wanted.ribbon.datapipe.domain.Genrestrt;
 
 public interface GenrestrtRepository extends JpaRepository<Genrestrt, Long> {
 }

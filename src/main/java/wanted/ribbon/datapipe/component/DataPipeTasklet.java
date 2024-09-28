@@ -1,4 +1,4 @@
-package wanted.ribbon.genrestrt.component;
+package wanted.ribbon.datapipe.component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,9 +11,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import wanted.ribbon.exception.BaseException;
 import wanted.ribbon.exception.ErrorCode;
-import wanted.ribbon.genrestrt.dto.RawData;
-import wanted.ribbon.genrestrt.mapper.RawDataRowMapper;
-import wanted.ribbon.genrestrt.service.DataProcessor;
+import wanted.ribbon.datapipe.dto.RawData;
+import wanted.ribbon.datapipe.mapper.RawDataRowMapper;
+import wanted.ribbon.datapipe.service.DataProcessor;
 import wanted.ribbon.store.domain.Store;
 
 import java.util.List;
