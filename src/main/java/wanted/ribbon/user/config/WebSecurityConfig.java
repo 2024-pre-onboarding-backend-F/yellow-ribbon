@@ -26,6 +26,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests(auth -> auth
                         .requestMatchers("/api/users/login", "/api/users/signup").permitAll()
+                        .requestMatchers("/api/datapipes/**").permitAll() // 데이터파이프라인 모든 권한 허용
                         .anyRequest().authenticated())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);

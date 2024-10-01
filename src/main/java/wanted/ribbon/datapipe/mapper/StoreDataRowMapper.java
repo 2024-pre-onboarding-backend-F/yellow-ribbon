@@ -1,4 +1,4 @@
-package wanted.ribbon.genrestrt.mapper;
+package wanted.ribbon.datapipe.mapper;
 
 import org.springframework.jdbc.core.RowMapper;
 import wanted.ribbon.store.domain.Category;

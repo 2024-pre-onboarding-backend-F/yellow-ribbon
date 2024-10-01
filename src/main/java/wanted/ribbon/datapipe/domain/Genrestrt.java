@@ -1,4 +1,4 @@
-package wanted.ribbon.genrestrt.domain;
+package wanted.ribbon.datapipe.domain;
 
 import jakarta.persistence.*;
 import lombok.*;

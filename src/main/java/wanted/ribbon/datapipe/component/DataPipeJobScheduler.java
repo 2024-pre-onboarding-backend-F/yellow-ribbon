@@ -1,4 +1,4 @@
-package wanted.ribbon.genrestrt.component;
+package wanted.ribbon.datapipe.component;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -9,7 +9,7 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import wanted.ribbon.genrestrt.config.DataPipeJobConfig;
+import wanted.ribbon.datapipe.config.DataPipeJobConfig;
 
 @Component
 @RequiredArgsConstructor

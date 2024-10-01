@@ -1,4 +1,4 @@
-package wanted.ribbon.genrestrt.service;
+package wanted.ribbon.datapipe.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import wanted.ribbon.exception.ErrorCode;
 import wanted.ribbon.exception.GenrestrtException;
-import wanted.ribbon.genrestrt.domain.Genrestrt;
-import wanted.ribbon.genrestrt.dto.GenrestrtApiResponse;
-import wanted.ribbon.genrestrt.repository.GenrestrtRepository;
+import wanted.ribbon.datapipe.domain.Genrestrt;
+import wanted.ribbon.datapipe.dto.GenrestrtApiResponse;
+import wanted.ribbon.datapipe.repository.GenrestrtRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

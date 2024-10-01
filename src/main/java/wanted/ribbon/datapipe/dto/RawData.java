@@ -1,4 +1,4 @@
-package wanted.ribbon.genrestrt.dto;
+package wanted.ribbon.datapipe.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
