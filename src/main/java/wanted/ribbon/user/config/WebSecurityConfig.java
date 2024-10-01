@@ -27,6 +27,7 @@ public class WebSecurityConfig {
                 .authorizeRequests(auth -> auth
                         .requestMatchers("/api/users/login", "/api/users/signup").permitAll()
                         .requestMatchers("/api/datapipes/**").permitAll() // 데이터파이프라인 모든 권한 허용
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll() //swagger
                         .anyRequest().authenticated())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
