@@ -1,5 +1,9 @@
 package wanted.ribbon.store.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +16,7 @@ import wanted.ribbon.store.service.StoreService;
 @RestController
 @RequestMapping("/api/stores")
 @RequiredArgsConstructor
+@Tag(name = "Store", description = "Store API")
 public class StoreController {
     private final StoreService storeService;
 
@@ -33,7 +38,11 @@ public class StoreController {
     }
 
     @GetMapping("/popular")
-    public ResponseEntity<PopularStoreListResponseDto> getPopularStoreList(@RequestParam(required = false) Category category, @RequestParam(required = false) String sigun) {
+    @Operation(summary = "인기 맛집 조회", description = "인기 맛집 조회 시 사용하는 API")
+    @ApiResponse(responseCode = "200", description = "OK")
+    public ResponseEntity<PopularStoreListResponseDto> getPopularStoreList(
+            @Parameter(description = "조회할 카테고리") @RequestParam(required = false) Category category,
+            @Parameter(description = "조회할 지역") @RequestParam(required = false) String sigun) {
         PopularStoreListResponseDto responseDto;
         if(category != null) {
             responseDto = storeService.findPopularCategoryStores(category);
