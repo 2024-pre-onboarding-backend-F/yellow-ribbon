@@ -81,4 +81,12 @@ public class StoreService {
         List<Store> storeList = storeRepository.findPopularStoresByCategory(4.5, 100, category, pageable);
         return PopularStoreListResponseDto.fromStoreList(storeList);
     }
+
+    @Transactional
+    @Cacheable(value = "popularstores", key = "#sigun", cacheManager = "cacheManager")
+    public PopularStoreListResponseDto findPopularSigunStores(String sigun) {
+        Pageable pageable = PageRequest.of(0, 100);
+        List<Store> storeList = storeRepository.findPopularStoresBySigun(4.5, 100, sigun, pageable);
+        return PopularStoreListResponseDto.fromStoreList(storeList);
+    }
 }
