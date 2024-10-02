@@ -8,12 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wanted.ribbon.exception.ErrorCode;
 import wanted.ribbon.exception.NotFoundException;
+import wanted.ribbon.store.domain.Category;
 import wanted.ribbon.store.domain.Review;
 import wanted.ribbon.store.domain.Store;
-import wanted.ribbon.store.dto.PopularStoreListResponseDto;
-import wanted.ribbon.store.dto.ReviewListResponseDto;
-import wanted.ribbon.store.dto.StoreDetailResponseDto;
-import wanted.ribbon.store.dto.StoreListResponseDto;
+import wanted.ribbon.store.dto.*;
 import wanted.ribbon.store.repository.ReviewRepository;
 import wanted.ribbon.store.repository.StoreRepository;
 
@@ -73,6 +71,14 @@ public class StoreService {
     public PopularStoreListResponseDto popularStores() {
         Pageable pageable = PageRequest.of(0, 100);
         List<Store> storeList = storeRepository.findPopularStores(4.5, 100, pageable);
+        return PopularStoreListResponseDto.fromStoreList(storeList);
+    }
+
+    @Transactional
+    @Cacheable(value = "popularstores", key = "#category.name()", cacheManager = "cacheManager")
+    public PopularStoreListResponseDto findPopularCategoryStores(Category category) {
+        Pageable pageable = PageRequest.of(0, 100);
+        List<Store> storeList = storeRepository.findPopularStoresByCategory(4.5, 100, category, pageable);
         return PopularStoreListResponseDto.fromStoreList(storeList);
     }
 }
