@@ -194,7 +194,7 @@ src
 </details>
 
 ## ERD
-<img width="718" alt="맛집 erd" src="https://github.com/user-attachments/assets/14e24bf4-2452-42d5-ad69-cb073ed33f47" width="90%" height="100%">
+<img width="718" alt="맛집 erd" src="https://github.com/user-attachments/assets/5bb0a339-db83-4f7b-a529-f992c4ce789e" width="90%" height="100%">
 
 </br>
 
