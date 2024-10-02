@@ -3,6 +3,7 @@ package wanted.ribbon.store.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import wanted.ribbon.store.domain.Category;
 import wanted.ribbon.store.dto.PopularStoreListResponseDto;
 import wanted.ribbon.store.dto.StoreDetailResponseDto;
 import wanted.ribbon.store.dto.StoreListResponseDto;
@@ -32,8 +33,13 @@ public class StoreController {
     }
 
     @GetMapping("/popular")
-    public ResponseEntity<PopularStoreListResponseDto> getPopularStoreList() {
-        PopularStoreListResponseDto responseDto = storeService.popularStores();
+    public ResponseEntity<PopularStoreListResponseDto> getPopularStoreList(@RequestParam(required = false) Category category) {
+        PopularStoreListResponseDto responseDto;
+        if(category != null) {
+            responseDto = storeService.findPopularCategoryStores(category);
+        } else {
+            responseDto = storeService.popularStores();
+        }
         return ResponseEntity.ok().body(responseDto);
     }
 }
