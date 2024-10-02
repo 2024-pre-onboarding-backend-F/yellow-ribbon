@@ -33,10 +33,12 @@ public class StoreController {
     }
 
     @GetMapping("/popular")
-    public ResponseEntity<PopularStoreListResponseDto> getPopularStoreList(@RequestParam(required = false) Category category) {
+    public ResponseEntity<PopularStoreListResponseDto> getPopularStoreList(@RequestParam(required = false) Category category, @RequestParam(required = false) String sigun) {
         PopularStoreListResponseDto responseDto;
         if(category != null) {
             responseDto = storeService.findPopularCategoryStores(category);
+        } else if(sigun != null) {
+            responseDto = storeService.findPopularSigunStores(sigun);
         } else {
             responseDto = storeService.popularStores();
         }
