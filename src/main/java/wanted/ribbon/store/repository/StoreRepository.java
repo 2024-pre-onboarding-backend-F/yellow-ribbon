@@ -18,4 +18,7 @@ public interface StoreRepository extends JpaRepository<Store, Long>, StoreReposi
 
     @Query("SELECT s FROM Store s WHERE s.category = :category AND s.rating >= :rating AND s.reviewCount >= :reviewCount ORDER BY s.rating DESC, s.reviewCount DESC")
     List<Store> findPopularStoresByCategory(@Param("rating")double rating, @Param("reviewCount")Integer reviewCount, @Param("category") Category category, Pageable pageable);
+
+    @Query("SELECT s FROM Store s WHERE s.sigun = :sigun AND s.rating >= :rating AND s.reviewCount >= :reviewCount ORDER BY s.rating DESC, s.reviewCount DESC")
+    List<Store> findPopularStoresBySigun(@Param("rating")double rating, @Param("reviewCount")Integer reviewCount, @Param("sigun") String sigun, Pageable pageable);
 }
