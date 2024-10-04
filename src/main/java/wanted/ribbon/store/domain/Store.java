@@ -41,6 +41,9 @@ public class Store {
     @Column(nullable = false, columnDefinition = "double default 0")
     private double rating;
 
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    private Integer reviewCount;
+
     public void updateRating(double rating) {
         this.rating = rating;
     }
