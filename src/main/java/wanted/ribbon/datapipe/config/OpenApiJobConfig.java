@@ -60,7 +60,10 @@ public class OpenApiJobConfig {
     @StepScope
     public ListItemReader<String> serviceNameReader() {
         List<String> serviceNames = List.of(
-                "Genrestrtchifood"
+                "Genrestrtchifood", "Genrestrtlunch", "Genrestrtcate", "Genrestrtmovmntcook",
+                "Genrestrtjpnfood", "Genrestrtsoup", "Genrestrtfastfood", "Genrestrtsash",
+                "Genrestrtbuff", "Genrestrtfugu", "Genrestrtstandpub", "Genrestrtbsrpcook",
+                "Genrestrttratearm"
         );
         return new ListItemReader<>(serviceNames);
     }
