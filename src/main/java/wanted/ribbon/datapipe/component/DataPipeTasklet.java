@@ -63,15 +63,16 @@ public class DataPipeTasklet implements Tasklet {
                 }
 
                 // Store 객체의 정보를 데이터베이스에 삽입
-                jdbcTemplate.update("INSERT INTO stores (sigun, store_name, category, address, store_lat, store_lon, rating) " +
-                                "VALUES (?,?,?,?,?,?,?)",
+                jdbcTemplate.update("INSERT INTO stores (sigun, store_name, category, address, store_lat, store_lon, rating, review_count) " +
+                                "VALUES (?,?,?,?,?,?,?,?)",
                         store.getSigun(),
                         store.getStoreName(),
                         store.getCategory().name(), // enum 값 문자열로 변환
                         store.getAddress(),
                         store.getStoreLat(),
                         store.getStoreLon(),
-                        0.0); // 평점은 0.0 디폴트값 입력
+                        0.0,
+                        0); // 평점은 0.0, 리뷰수는 0 디폴트값 입력
 
                 // genrestrts 테이블에서 조회된 데이터는 processed 상태 true로 업데이트
                 jdbcTemplate.update("UPDATE genrestrts SET processed = true WHERE bizplc_nm = ? AND refine_roadnm_addr = ?",

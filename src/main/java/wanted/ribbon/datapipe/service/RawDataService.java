@@ -15,22 +15,23 @@ import wanted.ribbon.datapipe.domain.Genrestrt;
 import wanted.ribbon.datapipe.dto.GyeongGiList;
 import wanted.ribbon.datapipe.repository.GenrestrtRepository;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 @Slf4j
-@Transactional
 public class RawDataService {
-    private final GenrestrtRepository genrestrtRepository;
     private final WebClient webClient;
+    private final RawDataSaveService rawDataSaveService;
 
     @Value("${spring.public-api.gyeong-gi-url}")
     private String baseUrl;
@@ -44,12 +45,13 @@ public class RawDataService {
      * @param serviceName API 서비스 이름
      * @return 처리된 데이터를 포함한 GyeongGiList의 Mono
      */
+    @Transactional
     public Mono<GyeongGiList> getAndSaveByServiceName(String serviceName) {
         return Mono.defer(() -> {
             // 페이지 인덱스를 위한 AtomicInteger 초기화
             AtomicInteger pageIndex = new AtomicInteger(1);
             // 한 페이지 당 가져올 데이터 수
-            int pageSize = 100;
+            int pageSize = 300;
             // 응답 저장할 리스트
             List<GyeongGiList.GyeongGiApiResponse> allResponses = new ArrayList<>();
 
@@ -67,8 +69,8 @@ public class RawDataService {
                     .takeWhile(Boolean::booleanValue)
                     // 3. 데이터베이스 저장 및 서비스이름 전달
                     .then(Mono.defer(() -> {
-                        GyeongGiList finalList = new GyeongGiList("모든 데이터가 성공적으로 처리되었습니다.", (long) allResponses.size(), allResponses);
-                        return saveToDatabase(finalList,serviceName);
+                        GyeongGiList finalList = new GyeongGiList("모든 데이터가 성공적으로 처리되었습니다.", (long) allResponses.size(),0,0,0,allResponses);
+                        return rawDataSaveService.saveToDatabase(finalList,serviceName);
                     }))
                     .doOnSuccess(result -> log.info("데이터 처리 완료: {} 개의 항목 처리됨", result.total()))
                     .doOnError(error -> log.error("데이터 처리 중 오류 발생", error));
@@ -108,7 +110,7 @@ public class RawDataService {
             return parseJsonResponse(jsonNode,serviceName);
         } catch (JsonProcessingException e) {
             log.error("JSON 파싱 중 오류 발생: {}", e.getMessage());
-            return new GyeongGiList("JSON 파싱 실패", 0L, Collections.emptyList());
+            return new GyeongGiList("JSON 파싱 실패", 0L,0,0,0, Collections.emptyList());
         }
     }
 
@@ -123,12 +125,12 @@ public class RawDataService {
 
         if (serviceNode.isMissingNode()) {
             log.warn("{} 노드를 찾을 수 없습니다.", serviceName);
-            return new GyeongGiList("데이터 구조 오류", 0L, responses);
+            return new GyeongGiList("데이터 구조 오류", 0L,0,0,0,responses);
         }
         JsonNode rowsNode = serviceNode.path(1).path("row");
         if (rowsNode.isMissingNode() || !rowsNode.isArray()) {
             log.warn("row 배열을 찾을 수 없습니다.");
-            return new GyeongGiList("데이터 구조 오류", 0L, responses);
+            return new GyeongGiList("데이터 구조 오류", 0L,0,0,0,responses);
         }
         for (JsonNode row : rowsNode) {
             // 각 행의 데이터를 GyeongGiApiResponse 객체로 변환
@@ -163,57 +165,7 @@ public class RawDataService {
                 log.error("행 파싱 중 오류 발생: {}", e.getMessage());
             }
         }
-        return new GyeongGiList("성공적으로 데이터를 파싱했습니다.", (long) responses.size(), responses);
-    }
-
-    /**
-     * 데이터를 비동기적으로 데이터베이스에 저장합니다.
-     * @param gyeongGiList 저장할 GyeongGiList 객체
-     * @return 저장된 GyeongGiList의 Mono
-     */
-    private Mono<GyeongGiList> saveToDatabase(GyeongGiList gyeongGiList, String serviceName) {
-        return Mono.fromCallable(() -> {
-            List<Genrestrt> genrestrts = gyeongGiList.gyeongGiApiResponses().stream()
-                    .map(this::convertToGenrestrt)
-                    .collect(Collectors.toList());
-            List<Genrestrt> savedGenrestrts = genrestrtRepository.saveAll(genrestrts);
-            int savedCount = savedGenrestrts.size();
-            String message = serviceName + "의 원본데이터 " + savedCount + "개가 DB에 성공적으로 저장됐습니다.";
-            return new GyeongGiList(message, (long) savedCount, gyeongGiList.gyeongGiApiResponses());
-        }).subscribeOn(Schedulers.boundedElastic());
-    }
-
-    /**
-     * GyeongGiApiResponse 객체를 Genrestrt 엔티티로 변환합니다.
-     * @param response 변환할 GyeongGiApiResponse 객체
-     * @return 변환된 Genrestrt 엔티티
-     */
-    private Genrestrt convertToGenrestrt(GyeongGiList.GyeongGiApiResponse response) {
-        return Genrestrt.builder()
-                .sigunNm(response.sigunNm())
-                .sigunCd(response.sigunCd())
-                .bizplcNm(response.bizplcNm())
-                .licensgDe(response.licensgDe())
-                .bsnStateNm(response.bsnStateNm())
-                .clsbizDe(response.clsbizDe())
-                .locplcAr(response.locplcAr())
-                .gradFacltDivNm(response.gradFacltDivNm())
-                .maleEnflpsnCnt(response.maleEnflpsnCnt())
-                .yy(response.yy())
-                .multiUseBizestblYn(response.multiUseBizestblYn())
-                .gradDivNm(response.gradDivNm())
-                .totFacltScale(response.totFacltScale())
-                .femaleEnflpsnCnt(response.femaleEnflpsnCnt())
-                .bsnsiteCircumfrDivNm(response.bsnsiteCircumfrDivNm())
-                .sanittnIndutypeNm(response.sanittnIndutypeNm())
-                .sanittnBizcondNm(response.sanittnBizcondNm())
-                .totEmplyCnt(response.totEmplyCnt())
-                .refineRoadnmAddr(response.refineRoadnmAddr())
-                .refineLotnoAddr(response.refineLotnoAddr())
-                .refineZipCd(response.refineZipCd())
-                .refineWgs84Lat(response.refineWgs84Lat())
-                .refineWgs84Logt(response.refineWgs84Logt())
-                .build();
+        return new GyeongGiList("성공적으로 데이터를 파싱했습니다.", (long) responses.size(), 0,0,0,responses);
     }
 
     /**
