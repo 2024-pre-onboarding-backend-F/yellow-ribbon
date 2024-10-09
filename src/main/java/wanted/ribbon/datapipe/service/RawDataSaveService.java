@@ -75,8 +75,8 @@ public class RawDataSaveService {
         String sql = "INSERT IGNORE INTO genrestrts (sigun_nm, sigun_cd, bizplc_nm, licensg_de, bsn_state_nm, clsbiz_de," +
                 "locplc_ar, grad_faclt_div_nm, male_enflpsn_cnt, yy, multi_use_bizestbl_yn, grad_div_nm," +
                 "tot_faclt_scale, female_enflpsn_cnt, bsnsite_circumfr_div_nm,sanittn_indutype_nm, sanittn_bizcond_nm, " +
-                "tot_emply_cnt, refine_roadnm_addr, refine_lotno_addr,refine_zip_cd,refine_wgs84lat,refine_wgs84logt) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "tot_emply_cnt, refine_roadnm_addr, refine_lotno_addr,refine_zip_cd,refine_wgs84lat,refine_wgs84logt,processed) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,false)";
 
         int insertedCount = 0;
 
