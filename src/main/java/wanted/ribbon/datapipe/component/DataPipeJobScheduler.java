@@ -17,12 +17,12 @@ public class DataPipeJobScheduler {
     private final Job openApiJob;
     private final Job dataPipeJob;
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 3 * * 1") // 매주 월요일 새벽 3시
     public void collectRawData(){
         runJob(openApiJob,"공공데이터 수집");
     }
 
-    @Scheduled(cron = "0 0 3 * * 1") // 매주 월요일 새벽 3시 1번 cron 표현식 활용 (초 분 시 일 월 요일)
+    @Scheduled(cron = "0 0 5 * * 1") // 매주 월요일 새벽 5시
     public void processedDataUpdate(){
         runJob(dataPipeJob,"운영 데이터 전처리");
     }
