@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import wanted.ribbon.store.domain.Category;
 import wanted.ribbon.store.dto.PopularStoreListResponseDto;
+import wanted.ribbon.store.dto.RisingPopularStoreListResponseDto;
 import wanted.ribbon.store.dto.StoreDetailResponseDto;
 import wanted.ribbon.store.dto.StoreListResponseDto;
 import wanted.ribbon.store.service.StoreService;
@@ -51,6 +52,12 @@ public class StoreController {
         } else {
             responseDto = storeService.popularStores();
         }
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @GetMapping("/rising")
+    public ResponseEntity<RisingPopularStoreListResponseDto> getRisingPopularStoreList() {
+        RisingPopularStoreListResponseDto responseDto = storeService.findRisingStores();
         return ResponseEntity.ok().body(responseDto);
     }
 }
