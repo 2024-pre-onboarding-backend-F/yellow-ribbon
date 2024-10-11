@@ -5,6 +5,9 @@ import java.util.List;
 
 public record GyeongGiList(String message,
                            Long total,
+                           int newCount,
+                           int updatedCount,
+                           int unchangedCount,
                            List<GyeongGiApiResponse> gyeongGiApiResponses) {
     public record GyeongGiApiResponse(String sigunNm,
                                       String sigunCd,
