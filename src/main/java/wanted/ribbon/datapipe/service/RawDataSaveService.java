@@ -126,9 +126,14 @@ public class RawDataSaveService {
         return insertedCount;
     }
 
+    /*
+    *  PreparedStatement를 이용한 SQL 배치 작업을 실행
+    *  이전에 추가된 여러 SQL 명령을 한 번에 실행
+    * @return 각 SQL 명령의 실행 결과를 포함한 int[] 배열을 반환(SQL 명령의 영향을 받은 행(row)의 개수)
+    * */
     private int executeBatch(PreparedStatement pstmt, Connection conn) throws SQLException {
         int[] results = pstmt.executeBatch();
-        conn.commit();
+        conn.commit(); //수동 커밋
         return Arrays.stream(results).sum();
     }
 
@@ -187,7 +192,7 @@ public class RawDataSaveService {
         genrestrtRepository.save(existingGenrestrt); //명시적 저장
     }
 
-    /**
+    /*
      * GyeongGiApiResponse 객체를 Genrestrt 엔티티로 변환합니다.
      * @param response 변환할 GyeongGiApiResponse 객체
      * @return 변환된 Genrestrt 엔티티
