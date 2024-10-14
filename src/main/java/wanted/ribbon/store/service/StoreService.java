@@ -15,6 +15,8 @@ import wanted.ribbon.store.dto.*;
 import wanted.ribbon.store.repository.ReviewRepository;
 import wanted.ribbon.store.repository.StoreRepository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -88,5 +90,20 @@ public class StoreService {
         Pageable pageable = PageRequest.of(0, 100);
         List<Store> storeList = storeRepository.findPopularStoresBySigun(4.5, 100, sigun, pageable);
         return PopularStoreListResponseDto.fromStoreList(storeList);
+    }
+
+    @Transactional
+    @Cacheable(value = "risingpopularstores", key = "'rising'", cacheManager = "cacheManager")
+    public RisingPopularStoreListResponseDto findRisingStores() {
+        Pageable pageable = PageRequest.of(0, 10);
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        LocalDateTime startDate = yesterday.atStartOfDay();
+        LocalDateTime endDate = LocalDate.now().atStartOfDay();
+        List<Object[]> storeList = reviewRepository.findStoresByReviewCount(startDate, endDate, pageable);
+        // Object[]를 Store로 변환
+        List<Store> risingStoreList = storeList.stream()
+                .map(result -> (Store) result[0])
+                .collect(Collectors.toList());
+        return RisingPopularStoreListResponseDto.fromRisingStoreList(risingStoreList);
     }
 }

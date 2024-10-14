@@ -47,4 +47,8 @@ public class Store {
     public void updateRating(double rating) {
         this.rating = rating;
     }
+
+    public void addReviewCount() {
+        this.reviewCount++;
+    }
 }
