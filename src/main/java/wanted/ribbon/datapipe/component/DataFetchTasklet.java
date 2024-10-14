@@ -31,7 +31,7 @@ public class DataFetchTasklet implements Tasklet {
     private static final int PAGE_SIZE = 1000;
 
     @Override
-    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
         int offset = 0;
         int totalRowsFetched = 0;
         int totalRowsDeleted = 0;
@@ -82,7 +82,7 @@ public class DataFetchTasklet implements Tasklet {
                   Store store = dataProcessor.process(rawData);
 
                   // stores에서 RawData와 매핑된 레코드 조회
-                  String storeQuery = "SELECT sigun, store_name, category, address, store_lat, store_lon,rating " +
+                  String storeQuery = "SELECT sigun, store_name, category, address, store_lat, store_lon, rating, review_count " +
                           "FROM stores " +
                           "WHERE store_name = ? AND address = ?";
                   List<Store> storeDataList = jdbcTemplate.query(storeQuery,

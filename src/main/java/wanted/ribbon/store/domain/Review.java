@@ -2,7 +2,11 @@ package wanted.ribbon.store.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import wanted.ribbon.user.domain.User;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -10,6 +14,7 @@ import wanted.ribbon.user.domain.User;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +26,10 @@ public class Review {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
+
+    @CreatedDate
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)

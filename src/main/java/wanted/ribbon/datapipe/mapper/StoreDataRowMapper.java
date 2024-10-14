@@ -19,6 +19,7 @@ public class StoreDataRowMapper implements RowMapper<Store> {
                 .storeLat(rs.getDouble("store_lat"))
                 .storeLon(rs.getDouble("store_lon"))
                 .rating(rs.getDouble("rating"))
+                .reviewCount(rs.getInt("review_count"))
                 .build();
     }
 }

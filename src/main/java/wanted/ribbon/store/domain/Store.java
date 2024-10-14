@@ -53,6 +53,10 @@ public class Store {
         this.rating = rating;
     }
 
+    public void addReviewCount() {
+        this.reviewCount++;
+    }
+
     // GeometryFactory는 thread-safe, stateless 하므로, static으로 선언하여 성능 개선
     private static final GeometryFactory geometryFactory = new GeometryFactory();
 
