@@ -16,6 +16,7 @@ import wanted.ribbon.store.domain.Review;
 import wanted.ribbon.store.domain.Store;
 import wanted.ribbon.store.dto.PopularStoreListResponseDto;
 import wanted.ribbon.store.dto.ReviewListResponseDto;
+import wanted.ribbon.store.dto.RisingPopularStoreListResponseDto;
 import wanted.ribbon.store.dto.StoreDetailResponseDto;
 import wanted.ribbon.store.dto.StoreListResponseDto;
 import wanted.ribbon.store.repository.ReviewRepository;
