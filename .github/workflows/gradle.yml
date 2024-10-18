@@ -58,8 +58,8 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest
-          docker stop $(docker ps -q --filter "name=yellow-ribbon")
-          docker rm yellow-ribbon || true
-          docker run -d --name yellow-ribbon --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest
-          docker image prune -a -f
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest
+          sudo docker stop $(docker ps -q --filter "name=yellow-ribbon")
+          sudo docker rm yellow-ribbon || true
+          sudo docker run -d --name yellow-ribbon --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest
+          sudo docker image prune -a -f
