@@ -23,9 +23,9 @@ public class UserApiController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponseDto> login(@RequestBody UserLoginRequestDto requestDto) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto requestDto) {
         // 사용자 검증 로직 추가
-        UserLoginResponseDto responseDto = userService.login(requestDto);
+        LoginResponseDto responseDto = userService.login(requestDto);
         return ResponseEntity.ok(responseDto);
     }
 

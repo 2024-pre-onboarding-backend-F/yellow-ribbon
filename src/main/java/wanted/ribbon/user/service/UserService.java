@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import wanted.ribbon.exception.ErrorCode;
 import wanted.ribbon.exception.NotFoundException;
 import wanted.ribbon.user.config.TokenProvider;
+import wanted.ribbon.user.domain.SocialType;
 import wanted.ribbon.user.domain.User;
 import wanted.ribbon.user.dto.*;
 import wanted.ribbon.user.repository.UserRepository;
@@ -73,13 +74,13 @@ public class UserService {
     }
 
     @Transactional
-    public UserLoginResponseDto login(UserLoginRequestDto requestDto) {
-        // 사용자 조회
-        User user = userRepository.findById(requestDto.getId())
+    public LoginResponseDto login(LoginRequestDto requestDto) {
+        // 사용자 조회 (String 타입의 ID와 소셜 타입으로 조회)
+        User user = userRepository.findByIdAndSocialType(requestDto.getId(), SocialType.KAKAO)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
 
-        // 비밀번호 검증
-        if (!bCryptPasswordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+        // 비밀번호 검증 (소셜 로그인은 비밀번호 검증 생략)
+        if (user.getSocialType() == null && !bCryptPasswordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Invalid password");
         }
 
@@ -91,6 +92,6 @@ public class UserService {
         tokenService.saveRefreshToken(user, refreshToken);
 
         // 응답 DTO 반환
-        return new UserLoginResponseDto(user.getUserId(), accessToken, refreshToken);
+        return new LoginResponseDto(user.getUserId(), accessToken, refreshToken);
     }
 }

@@ -15,7 +15,8 @@ public class RefreshToken {
     @Column(name = "token_id", nullable = false)
     private Long tokenId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch =
+            FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
