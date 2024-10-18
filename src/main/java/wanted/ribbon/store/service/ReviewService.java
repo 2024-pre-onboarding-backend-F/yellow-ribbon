@@ -41,6 +41,8 @@ public class ReviewService {
 
         // 점수 입력되면 해당 맛집의 평점 update
         updateRating(store);
+        // 해당 맛집의 리뷰 개수 추가
+        store.addReviewCount();
 
         CreateReviewResponseDto responseDto = new CreateReviewResponseDto(id, requestDto.score(), requestDto.content());
         return responseDto;

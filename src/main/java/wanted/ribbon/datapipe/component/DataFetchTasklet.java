@@ -1,4 +1,4 @@
-package wanted.ribbon.genrestrt.component;
+package wanted.ribbon.datapipe.component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,10 +11,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import wanted.ribbon.exception.BaseException;
 import wanted.ribbon.exception.ErrorCode;
-import wanted.ribbon.genrestrt.dto.RawData;
-import wanted.ribbon.genrestrt.mapper.RawDataRowMapper;
-import wanted.ribbon.genrestrt.mapper.StoreDataRowMapper;
-import wanted.ribbon.genrestrt.service.DataProcessor;
+import wanted.ribbon.datapipe.dto.RawData;
+import wanted.ribbon.datapipe.mapper.RawDataRowMapper;
+import wanted.ribbon.datapipe.mapper.StoreDataRowMapper;
+import wanted.ribbon.datapipe.service.DataProcessor;
 import wanted.ribbon.store.domain.Store;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class DataFetchTasklet implements Tasklet {
     private static final int PAGE_SIZE = 1000;
 
     @Override
-    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
         int offset = 0;
         int totalRowsFetched = 0;
         int totalRowsDeleted = 0;
@@ -82,7 +82,7 @@ public class DataFetchTasklet implements Tasklet {
                   Store store = dataProcessor.process(rawData);
 
                   // stores에서 RawData와 매핑된 레코드 조회
-                  String storeQuery = "SELECT sigun, store_name, category, address, store_lat, store_lon,rating " +
+                  String storeQuery = "SELECT sigun, store_name, category, address, store_lat, store_lon, rating, review_count " +
                           "FROM stores " +
                           "WHERE store_name = ? AND address = ?";
                   List<Store> storeDataList = jdbcTemplate.query(storeQuery,

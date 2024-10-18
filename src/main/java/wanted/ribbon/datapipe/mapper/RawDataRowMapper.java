@@ -1,7 +1,7 @@
-package wanted.ribbon.genrestrt.mapper;
+package wanted.ribbon.datapipe.mapper;
 
 import org.springframework.jdbc.core.RowMapper;
-import wanted.ribbon.genrestrt.dto.RawData;
+import wanted.ribbon.datapipe.dto.RawData;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

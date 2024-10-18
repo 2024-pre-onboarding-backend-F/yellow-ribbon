@@ -1,4 +1,4 @@
-package wanted.ribbon.genrestrt.component;
+package wanted.ribbon.datapipe.component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,11 +9,11 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import wanted.ribbon.datapipe.dto.RawData;
+import wanted.ribbon.datapipe.mapper.RawDataRowMapper;
+import wanted.ribbon.datapipe.service.DataProcessor;
 import wanted.ribbon.exception.BaseException;
 import wanted.ribbon.exception.ErrorCode;
-import wanted.ribbon.genrestrt.dto.RawData;
-import wanted.ribbon.genrestrt.mapper.RawDataRowMapper;
-import wanted.ribbon.genrestrt.service.DataProcessor;
 import wanted.ribbon.store.domain.Store;
 
 import java.util.List;
@@ -63,15 +63,18 @@ public class DataPipeTasklet implements Tasklet {
                 }
 
                 // Store 객체의 정보를 데이터베이스에 삽입
-                jdbcTemplate.update("INSERT INTO stores (sigun, store_name, category, address, store_lat, store_lon, rating) " +
-                                "VALUES (?,?,?,?,?,?,?)",
+                jdbcTemplate.update("INSERT INTO stores (sigun, store_name, category, address, store_lat, store_lon, location, rating, review_count) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ST_GeomFromText(CONCAT('POINT(', ?, ' ', ?, ')'), 4326), ?, ?)",
                         store.getSigun(),
                         store.getStoreName(),
                         store.getCategory().name(), // enum 값 문자열로 변환
                         store.getAddress(),
                         store.getStoreLat(),
                         store.getStoreLon(),
-                        0.0); // 평점은 0.0 디폴트값 입력
+                        store.getStoreLon(),  // POINT(lon lat) -> 경도(lon), 위도(lat)
+                        store.getStoreLat(),
+                        0.0,
+                        0); // 평점은 0.0, 리뷰수는 0 디폴트값 입력
 
                 // genrestrts 테이블에서 조회된 데이터는 processed 상태 true로 업데이트
                 jdbcTemplate.update("UPDATE genrestrts SET processed = true WHERE bizplc_nm = ? AND refine_roadnm_addr = ?",

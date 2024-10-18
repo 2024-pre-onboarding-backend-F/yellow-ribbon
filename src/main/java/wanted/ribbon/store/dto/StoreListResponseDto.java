@@ -1,6 +1,5 @@
 package wanted.ribbon.store.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import wanted.ribbon.store.domain.Store;
 

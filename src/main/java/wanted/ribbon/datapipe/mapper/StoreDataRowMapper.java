@@ -1,4 +1,4 @@
-package wanted.ribbon.genrestrt.mapper;
+package wanted.ribbon.datapipe.mapper;
 
 import org.springframework.jdbc.core.RowMapper;
 import wanted.ribbon.store.domain.Category;
@@ -19,6 +19,7 @@ public class StoreDataRowMapper implements RowMapper<Store> {
                 .storeLat(rs.getDouble("store_lat"))
                 .storeLon(rs.getDouble("store_lon"))
                 .rating(rs.getDouble("rating"))
+                .reviewCount(rs.getInt("review_count"))
                 .build();
     }
 }

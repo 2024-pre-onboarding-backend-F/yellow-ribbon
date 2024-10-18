@@ -1,4 +1,4 @@
-package wanted.ribbon.genrestrt.domain;
+package wanted.ribbon.datapipe.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +13,7 @@ import java.util.Date;
 @Table(name = "genrestrts", uniqueConstraints = {
         @UniqueConstraint(
                 name="BIZPLCNM_REFINEROADNMADDR_UNIQUE",
-                columnNames={"BIZPLCNM","REFINEROADNMADDR"}
+                columnNames={"bizplcNm","refineRoadnmAddr"}
         )})
 public class Genrestrt {
 
@@ -47,4 +47,16 @@ public class Genrestrt {
 
     @Builder.Default
     private Boolean processed = false; // 데이터 배치 처리 여부를 나타내는 필드
+
+    // 업데이트
+   public void updateExistingGenrestrt(Genrestrt newData){
+       this.sigunNm = newData.sigunNm;
+       this.bizplcNm = newData.bizplcNm;
+       this.bsnStateNm = newData.bsnStateNm;
+       this.sanittnIndutypeNm = newData.sanittnIndutypeNm;
+       this.sanittnBizcondNm = newData.sanittnBizcondNm;
+       this.refineRoadnmAddr = newData.refineRoadnmAddr;
+       this.refineWgs84Lat = newData.refineWgs84Lat;
+       this.refineWgs84Logt = newData.refineWgs84Logt;
+   }
 }

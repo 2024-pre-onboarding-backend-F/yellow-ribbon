@@ -2,17 +2,19 @@ package wanted.ribbon.store.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 
 @Entity
 @Getter
 @Table(name = "stores", uniqueConstraints = {
         @UniqueConstraint(
-                name="STORENAME_ADDRESS_UNIQUE",
-                columnNames={"STORENAME","ADDRESS"}
+                name = "STORENAME_ADDRESS_UNIQUE",
+                columnNames = {"STORENAME", "ADDRESS"}
         )})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
 public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,15 +35,63 @@ public class Store {
     private String address;
 
     @Column(nullable = false)
-    private double storeLat;
+    private double storeLon; // 경도 (세로)
 
     @Column(nullable = false)
-    private double storeLon;
+    private double storeLat; // 위도 (가로)
+
+    @Column(nullable = false, columnDefinition = "POINT SRID 4326")
+    private Point location; // Point(경도, 위도)
 
     @Column(nullable = false, columnDefinition = "double default 0")
     private double rating;
 
+    @Column(nullable = false, columnDefinition = "integer default 0")
+    private Integer reviewCount;
+
     public void updateRating(double rating) {
         this.rating = rating;
+    }
+
+    public void addReviewCount() {
+        this.reviewCount++;
+    }
+
+    // GeometryFactory는 thread-safe, stateless 하므로, static으로 선언하여 성능 개선
+    private static final GeometryFactory geometryFactory = new GeometryFactory();
+
+    // storeLat, storeLon으로 location(Point) 설정
+    public void setLocation(double storeLon, double storeLat) {
+        this.location = geometryFactory.createPoint(new Coordinate(storeLon, storeLat));
+        this.location.setSRID(4326);
+    }
+
+    private void ensureLocation() {
+        this.setLocation(this.storeLon, this.storeLat);
+    }
+
+    // @PrePersist: 엔티티가 처음 저장될 때 location 필드 설정
+    @PrePersist
+    public void prePersist() {
+        ensureLocation();
+    }
+
+    // @PreUpdate: 엔티티가 업데이트될 때 (위도/경도 값이 변경되면) 자동으로 location 필드 갱신
+    @PreUpdate
+    public void preUpdate() {
+        ensureLocation();
+    }
+
+    @Builder
+    public Store(String sigun, String storeName, Category category, String address, double storeLon, double storeLat, double rating, Integer reviewCount) {
+        this.sigun = sigun;
+        this.storeName = storeName;
+        this.category = category;
+        this.address = address;
+        this.storeLon = storeLon;
+        this.storeLat = storeLat;
+        this.setLocation(storeLon, storeLat);
+        this.rating = rating;
+        this.reviewCount = reviewCount;
     }
 }
