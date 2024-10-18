@@ -56,12 +56,12 @@ public class StoreService {
      * 경도, 위도에서 첫 번째 소수점 자리는 최대 11.1km, 두 번째 소수점 자리는 1.1 km, 세 번째 소수점 자리는 110m 이다.
      * 여섯 번째 자리는 11cm를 나타내기에 보통 경도, 위도를 소수 6자리까지 나타내고, 계산해도 큰 오차가 없다.
      *
-     * @param lat     위도 (가로선=남북) (위도 범위 : -90 ~ 90)
      * @param lon     경도 (세로선=동서) (경도 범위 : -180 ~ 180)
+     * @param lat     위도 (가로선=남북) (위도 범위 : -90 ~ 90)
      * @param range   경도, 위도로 지정한 위치 주변의 검색할 범위 값 (단위는 km 이며, range 1.0은 1km 이다.)
      * @param orderBy store 데이터 정렬 기준 (거리순과 평점순 2가지)
      */
-    public StoreListResponseDto findStores(double lat, double lon, double range, String orderBy) {
+    public StoreListResponseDto findStores(double lon, double lat, double range, String orderBy) {
         // 경도, 위도의 계산을 위해 km를 m로 변환
         double meterRange = range * 1000;
         // bbox를 구하는 4 모서리 좌표 계산에 활용하기 위해 반으로 나눔
