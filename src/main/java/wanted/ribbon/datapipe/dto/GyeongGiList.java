@@ -9,6 +9,7 @@ public record GyeongGiList(String message,
                            int updatedCount,
                            int unchangedCount,
                            List<GyeongGiApiResponse> gyeongGiApiResponses) {
+
     public record GyeongGiApiResponse(String sigunNm,
                                       String sigunCd,
                                       String bizplcNm,
@@ -30,6 +31,8 @@ public record GyeongGiList(String message,
                                       String refineRoadnmAddr,
                                       String refineLotnoAddr,
                                       String refineZipCd,
-                                      Double refineWgs84Lat,
-                                      Double refineWgs84Logt){}
+                                      Double refineWgs84Logt,
+                                      Double refineWgs84Lat
+    ) {
+    }
 }

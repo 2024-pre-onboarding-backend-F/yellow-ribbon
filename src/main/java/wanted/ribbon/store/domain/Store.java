@@ -35,10 +35,10 @@ public class Store {
     private String address;
 
     @Column(nullable = false)
-    private double storeLon; // 경도 (세로)
+    private double storeLon; // 경도 (세로선=동서)
 
     @Column(nullable = false)
-    private double storeLat; // 위도 (가로)
+    private double storeLat; // 위도 (가로선=남북)
 
     @Column(nullable = false, columnDefinition = "POINT SRID 4326")
     private Point location; // Point(경도, 위도)
@@ -60,7 +60,7 @@ public class Store {
     // GeometryFactory는 thread-safe, stateless 하므로, static으로 선언하여 성능 개선
     private static final GeometryFactory geometryFactory = new GeometryFactory();
 
-    // storeLat, storeLon으로 location(Point) 설정
+    // storeLon, storeLat으로 location(Point) 설정
     public void setLocation(double storeLon, double storeLat) {
         this.location = geometryFactory.createPoint(new Coordinate(storeLon, storeLat));
         this.location.setSRID(4326);
@@ -76,7 +76,7 @@ public class Store {
         ensureLocation();
     }
 
-    // @PreUpdate: 엔티티가 업데이트될 때 (위도/경도 값이 변경되면) 자동으로 location 필드 갱신
+    // @PreUpdate: 엔티티가 업데이트될 때 (경도/위도 값이 변경되면) 자동으로 location 필드 갱신
     @PreUpdate
     public void preUpdate() {
         ensureLocation();

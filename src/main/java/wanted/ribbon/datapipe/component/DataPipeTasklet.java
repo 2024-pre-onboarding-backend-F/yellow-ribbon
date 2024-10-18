@@ -63,16 +63,17 @@ public class DataPipeTasklet implements Tasklet {
                 }
 
                 // Store 객체의 정보를 데이터베이스에 삽입
-                jdbcTemplate.update("INSERT INTO stores (sigun, store_name, category, address, store_lat, store_lon, location, rating, review_count) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ST_GeomFromText(CONCAT('POINT(', ?, ' ', ?, ')'), 4326), ?, ?)",
+                jdbcTemplate.update("INSERT INTO stores (sigun, store_name, category, address, store_lon, store_lat, location, rating, review_count) " +
+                                "VALUES (?, ?, ?, ?, ?, ?, ST_GeomFromText(CONCAT('POINT(', ?, ' ', ?, ')'), 4326), ?, ?)",
                         store.getSigun(),
                         store.getStoreName(),
                         store.getCategory().name(), // enum 값 문자열로 변환
                         store.getAddress(),
-                        store.getStoreLat(),
-                        store.getStoreLon(),
-                        store.getStoreLon(),  // POINT(lon lat) -> 경도(lon), 위도(lat)
-                        store.getStoreLat(),
+                        store.getStoreLon(), // 경도
+                        store.getStoreLat(), // 위도
+                        // POINT(lon lat)이 맞는데 ST_GeomFromText 함수로 넣는 POINT 에서는 반대로해야 db에 올바르게 들어갔음
+                        store.getStoreLat(),  // 여기에서 위도 값을 전달
+                        store.getStoreLon(),  // 여기에서 경도 값을 전달
                         0.0,
                         0); // 평점은 0.0, 리뷰수는 0 디폴트값 입력
 
