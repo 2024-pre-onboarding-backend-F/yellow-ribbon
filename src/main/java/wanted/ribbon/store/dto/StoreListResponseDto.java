@@ -16,7 +16,7 @@ public record StoreListResponseDto(int totalCount, List<StoreResponseDto> stores
     }
 
     // record 타입에 메서드를 추가했을 때 Jackson 라이브러리가 record의 모든 메서드를 직렬화 대상 필드로 간주하기 때문에
-    @JsonIgnore // 직렬화 과젱에서 무시하기위해 사용함
+    @JsonIgnore // 직렬화 과정에서 무시하기위해 사용함
     public boolean isEmpty() {
         return stores.isEmpty();
     }
