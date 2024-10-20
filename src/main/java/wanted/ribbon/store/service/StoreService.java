@@ -59,7 +59,7 @@ public class StoreService {
      * @param lon     경도 (세로선=동서) (경도 범위 : -180 ~ 180)
      * @param lat     위도 (가로선=남북) (위도 범위 : -90 ~ 90)
      * @param range   경도, 위도로 지정한 위치 주변의 검색할 범위 값 (단위는 km 이며, range 1.0은 1km 이다.)
-     * @param orderBy store 데이터 정렬 기준 (거리순과 평점순 2가지)
+     * @param orderBy store 맛집 데이터 정렬 기준 2가지 : 거리순(distance,기본값) or 평점순(rating)
      */
     public StoreListResponseDto findStores(double lon, double lat, double range, String orderBy) {
         // 경도, 위도의 계산을 위해 km를 m로 변환
