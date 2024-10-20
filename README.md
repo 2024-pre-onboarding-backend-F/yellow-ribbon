@@ -194,8 +194,7 @@ src
 </details>
 
 ## ERD
-<img width="718" alt="맛집 erd" src="https://github.com/user-attachments/assets/5bb0a339-db83-4f7b-a529-f992c4ce789e" width="90%" height="100%">
-
+<img width="718" alt="맛집 erd" src="https://github.com/user-attachments/assets/5dc2ea78-b6e7-445c-b8f2-5f978205016d" width="90%" height="100%">
 </br>
 
 ## API 명세서
