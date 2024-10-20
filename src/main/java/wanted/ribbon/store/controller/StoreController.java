@@ -43,7 +43,7 @@ public class StoreController {
     }
 
     @GetMapping("/popular")
-    @Operation(summary = "인기 맛집 조회", description = "인기 맛집 조회 시 사용하는 API\n")
+    @Operation(summary = "인기 맛집 조회", description = "인기 맛집 조회 시 사용하는 API")
     @ApiResponse(responseCode = "200", description = "OK")
     public ResponseEntity<PopularStoreListResponseDto> getPopularStoreList(
             @Parameter(description = "조회할 카테고리") @RequestParam(required = false) Category category,
@@ -60,6 +60,8 @@ public class StoreController {
     }
 
     @GetMapping("/rising")
+    @Operation(summary = "인기 급상승 맛집 조회", description = "인기 급상승 맛집 조회 시 사용하는 API")
+    @ApiResponse(responseCode = "200", description = "OK")
     public ResponseEntity<RisingPopularStoreListResponseDto> getRisingPopularStoreList() {
         RisingPopularStoreListResponseDto responseDto = storeService.findRisingStores();
         return ResponseEntity.ok().body(responseDto);
