@@ -41,7 +41,7 @@ public class UserOauthService {
 
         if (registedUser.isPresent()) {
             // 기존 회원인 경우 로그인 처리
-            return new LoginRequestDto(id, null); // 패스워드 없이 소셜 로그인 처리
+            return new LoginRequestDto(id, null, socialType); // 패스워드 없이 소셜 로그인 처리
         } else {
             // 신규 회원 가입 처리
             User newUser = User.builder()
@@ -49,7 +49,7 @@ public class UserOauthService {
                     .socialType(socialType)
                     .build();
             userRepository.save(newUser);
-            return new LoginRequestDto(id, null);
+            return new LoginRequestDto(id, null, socialType);
         }
     }
 
