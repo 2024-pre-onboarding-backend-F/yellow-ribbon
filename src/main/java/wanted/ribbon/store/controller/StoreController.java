@@ -22,11 +22,11 @@ public class StoreController {
     private final StoreService storeService;
 
     @GetMapping
-    public ResponseEntity<StoreListResponseDto> getStoreList(@RequestParam(value = "lat") double lat,
-                                                             @RequestParam(value = "lon") double lon,
+    public ResponseEntity<StoreListResponseDto> getStoreList(@RequestParam(value = "lon") double lon,
+                                                             @RequestParam(value = "lat") double lat,
                                                              @RequestParam(value = "range") double range,
                                                              @RequestParam(value = "orderBy", defaultValue = "distance", required = false) String orderBy) {
-        StoreListResponseDto storeList = storeService.findStores(lat, lon, range, orderBy);
+        StoreListResponseDto storeList = storeService.findStores(lon, lat, range, orderBy);
         if (storeList.isEmpty())
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(storeList);
@@ -45,9 +45,9 @@ public class StoreController {
             @Parameter(description = "조회할 카테고리") @RequestParam(required = false) Category category,
             @Parameter(description = "조회할 지역") @RequestParam(required = false) String sigun) {
         PopularStoreListResponseDto responseDto;
-        if(category != null) {
+        if (category != null) {
             responseDto = storeService.findPopularCategoryStores(category);
-        } else if(sigun != null) {
+        } else if (sigun != null) {
             responseDto = storeService.findPopularSigunStores(sigun);
         } else {
             responseDto = storeService.popularStores();
