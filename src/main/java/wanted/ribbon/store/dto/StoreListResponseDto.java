@@ -1,12 +1,15 @@
 package wanted.ribbon.store.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import wanted.ribbon.store.domain.Store;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record StoreListResponseDto(int totalCount, List<StoreResponseDto> stores) {
+@Schema(title = "StoreListResponseDto (맛집 목록 응답 DTO)")
+public record StoreListResponseDto(@Schema(description = "조회된 맛집 개수") int totalCount,
+                                   @Schema(description = "조회된 맛집 목록") List<StoreResponseDto> stores) {
 
     public static StoreListResponseDto fromStoreList(List<Store> storeList) {
         List<StoreResponseDto> storeResponseDto = storeList.stream()
