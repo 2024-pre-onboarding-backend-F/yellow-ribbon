@@ -1,11 +1,13 @@
 package wanted.ribbon.store.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import wanted.ribbon.store.domain.Category;
 import wanted.ribbon.store.domain.Store;
 
+@Schema(title = "StoreResponseDto (맛집 조회 응답 DTO)")
 public record StoreResponseDto(Long storeId, String sigun, String storeName,
                                Category category, String address,
-                               double storeLat, double storeLon, double rating) {
+                               double storeLon, double storeLat, double rating, Integer reviewCount) {
 
     public static StoreResponseDto from(Store store) {
         return new StoreResponseDto(
@@ -14,9 +16,10 @@ public record StoreResponseDto(Long storeId, String sigun, String storeName,
                 store.getStoreName(),
                 store.getCategory(),
                 store.getAddress(),
-                store.getStoreLat(),
                 store.getStoreLon(),
-                store.getRating()
+                store.getStoreLat(),
+                store.getRating(),
+                store.getReviewCount()
         );
     }
 }
