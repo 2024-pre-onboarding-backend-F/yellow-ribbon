@@ -91,7 +91,10 @@ public class StoreService {
     public StoreListResponseDto findRecommendStores(double lon, double lat, double range) {
         Point userLocation = geometryFactory.createPoint(new Coordinate(lon, lat)); // 사용자의 경도, 위도를 Point 데이터 타입으로 변경
         userLocation.setSRID(4326); // SRID 4326 (WGS 84 좌표계)로 설정
-        List<Store> storeList = storeRepository.findRecommendStores(userLocation); // 기본적으로 거리순으로 정렬되어 반환됨
+        // 1. 기존 방식 - JPQL 쿼리 방법
+//        List<Store> storeList = storeRepository.findRecommendStores(userLocation); // 기본적으로 거리순으로 정렬되어 반환됨
+        // 2. 리팩토링 방식 - QueryDsl을 사용한 방법 (리팩토링 이유 : where 절의 조건이 복잡해서)
+        List<Store> storeList = storeRepository.findAllRecommendStores(userLocation);
         return StoreListResponseDto.fromStoreList(storeList);
     }
 
