@@ -27,7 +27,7 @@ public interface StoreRepository extends JpaRepository<Store, Long>, StoreReposi
     @Query("SELECT s FROM Store s " +
             "WHERE ST_Contains(ST_Buffer(:userLocation, :meterRange), s.location) " + // ST_Buffer와 ST_Contains로 spatial index 활용
             "ORDER BY ST_Distance(s.location, :userLocation) ASC") // 거리가 가까운 가게부터 정렬
-    List<Store> findByLocationOrderByDistance(@Param("userLocation") Point userLocation, @Param("meterRange") double meterRange);
+    List<Store> findStoresByUserLocationOrderByDistance(@Param("userLocation") Point userLocation, @Param("meterRange") double meterRange);
 
     // 사용자 위치 기반 맛집 조회 목록 - 평점순으로 정렬
     @Query("SELECT s FROM Store s " +
