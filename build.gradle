@@ -30,8 +30,6 @@ repositories {
 }
 
 dependencies {
-    //PostGreSQL driver add
-    //runtimeOnly 'org.postgresql:postgresql'
     // oauth2
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

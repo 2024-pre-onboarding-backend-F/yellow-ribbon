@@ -16,7 +16,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import wanted.ribbon.user.domain.SocialType;
 import wanted.ribbon.user.domain.User;
-import wanted.ribbon.user.dto.LoginRequestDto;
+import wanted.ribbon.user.dto.LoginRequest;
 import wanted.ribbon.user.repository.UserRepository;
 
 import java.util.HashMap;
@@ -36,12 +36,12 @@ public class UserOauthService {
     private String kakaoRedirectUri;
 
     @Transactional
-    public LoginRequestDto loginUser(String id, SocialType socialType){
+    public LoginRequest loginUser(String id, SocialType socialType){
         Optional<User> registedUser = userRepository.findByIdAndSocialType(id, socialType);
 
         if (registedUser.isPresent()) {
             // 기존 회원인 경우 로그인 처리
-            return new LoginRequestDto(id, null, socialType); // 패스워드 없이 소셜 로그인 처리
+            return new LoginRequest(id, null, socialType); // 패스워드 없이 소셜 로그인 처리
         } else {
             // 신규 회원 가입 처리
             User newUser = User.builder()
@@ -49,7 +49,7 @@ public class UserOauthService {
                     .socialType(socialType)
                     .build();
             userRepository.save(newUser);
-            return new LoginRequestDto(id, null, socialType);
+            return new LoginRequest(id, null, socialType);
         }
     }
 
