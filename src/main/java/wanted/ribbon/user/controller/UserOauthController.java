@@ -1,5 +1,8 @@
 package wanted.ribbon.user.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +22,15 @@ import wanted.ribbon.user.service.UserOauthService;
 import java.util.ArrayList;
 import java.util.Map;
 
+@Tag(name = "Users", description = "Users API")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/oauth")
 public class UserOauthController {
     private final UserOauthService userAuthService;
 
+    @Operation(summary = "사용자 카카오톡 회원가입", description = "사용자가 카카오톡 ID와 PW로 회원가입합니다.")
+    @ApiResponse(responseCode = "201", description = "CREATED")
     @GetMapping("/kakao/login")
     public ResponseEntity<ResponseDto> kakaoLogin(@RequestParam("code") String code) throws ParseException {
         // 액세스 토큰 받아오기
