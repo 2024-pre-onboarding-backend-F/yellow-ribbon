@@ -23,7 +23,7 @@ public class UserApiController {
     @Operation(summary = "사용자 회원가입", description = "사용자가 ID와 PW로 회원가입합니다.")
     @ApiResponse(responseCode = "201", description = "CREATED")
     @PostMapping("/signup")
-    public ResponseEntity<SignUpResponse> signUp(@Validated @RequestBody SignUpUserRequest request){
+    public ResponseEntity<SignUpResponse> signUp(@Validated @RequestBody SignUpRequest request){
         SignUpResponse response = userService.save(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -31,9 +31,9 @@ public class UserApiController {
     @Operation(summary = "사용자 로그인", description = "사용자가 ID와 PW로 로그인합니다.")
     @ApiResponse(responseCode = "200", description = "OK")
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto requestDto) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest requestDto) {
         // 사용자 검증 로직 추가
-        LoginResponseDto responseDto = userService.login(requestDto);
+        LoginResponse responseDto = userService.login(requestDto);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -49,8 +49,8 @@ public class UserApiController {
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "404", description = "BAD REQUEST")
     @PutMapping("/settings/{userId}")
-    public ResponseEntity<UpdateUserResponse> updateUser(@PathVariable UUID userId, @RequestBody UpdateUserRequest request){
-        UpdateUserResponse updatedUser = userService.updateUser(userId, request);
+    public ResponseEntity<UpdateProfileResponse> updateUser(@PathVariable UUID userId, @RequestBody UpdateProfileRequest request){
+        UpdateProfileResponse updatedUser = userService.updateUser(userId, request);
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 }

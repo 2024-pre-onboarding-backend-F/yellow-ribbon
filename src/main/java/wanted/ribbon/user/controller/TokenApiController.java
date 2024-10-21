@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wanted.ribbon.user.dto.CreateAccessTokenRequest;
+import wanted.ribbon.user.dto.CreateRefreshTokenRequest;
 import wanted.ribbon.user.dto.CreateAccessTokenResponse;
 import wanted.ribbon.user.service.TokenService;
 
@@ -24,8 +24,8 @@ public class TokenApiController {
     @Operation(summary = "토큰 생성", description = "Access Token을 생성하는 API")
     @ApiResponse(responseCode = "201", description = "CREATED")
     @PostMapping("/token")
-    public ResponseEntity<CreateAccessTokenResponse> createNewAccessToken(@RequestBody CreateAccessTokenRequest request){
-        String newAccessToken = tokenService.createNewAccessToken(request.getRefreshToken());
+    public ResponseEntity<CreateAccessTokenResponse> createNewAccessToken(@RequestBody CreateRefreshTokenRequest request){
+        String newAccessToken = tokenService.createNewAccessToken(request.refreshToken());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new CreateAccessTokenResponse(newAccessToken));
     }

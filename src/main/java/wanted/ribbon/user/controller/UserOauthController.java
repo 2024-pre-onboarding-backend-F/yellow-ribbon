@@ -16,7 +16,7 @@ import wanted.ribbon.global.response.ResponseCode;
 import wanted.ribbon.global.response.ResponseDto;
 import wanted.ribbon.user.domain.SocialType;
 import wanted.ribbon.user.domain.User;
-import wanted.ribbon.user.dto.LoginRequestDto;
+import wanted.ribbon.user.dto.LoginRequest;
 import wanted.ribbon.user.service.UserOauthService;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class UserOauthController {
         if(userInfo != null && userInfo.get("id") != null){
             String id = userInfo.get("id").toString();
             System.out.println("카카오 로그인 유저 ID: " + id);
-            LoginRequestDto userLoginDto = userAuthService.loginUser(id, SocialType.KAKAO);
+            LoginRequest userLoginDto = userAuthService.loginUser(id, SocialType.KAKAO);
 
             if(userLoginDto != null){
                 // 유저 등록 또는 로그인 처리
@@ -52,7 +52,7 @@ public class UserOauthController {
 
                 // 인증 정보를 설정하고 세션에 저장
                 UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(userLoginDto.getId(), null, new ArrayList<>());
+                        new UsernamePasswordAuthenticationToken(userLoginDto.id(), null, new ArrayList<>());
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
                 // 로그인 성공 후 리다이렉션이나 응답 반환
