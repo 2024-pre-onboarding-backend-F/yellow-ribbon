@@ -61,6 +61,7 @@ public class StoreService {
      * @param range   경도, 위도로 지정한 위치 주변의 검색할 범위 값 (단위는 km 이며, range 1.0은 1km 이다.)
      * @param orderBy store 맛집 데이터 정렬 기준 2가지 : 거리순(distance,기본값) or 평점순(rating)
      */
+    @Transactional(readOnly = true)
     public StoreListResponseDto findStores(double lon, double lat, double range, String orderBy) {
         // 경도, 위도의 계산을 위해 km를 m로 변환
         double meterRange = range * 1000;
@@ -82,6 +83,15 @@ public class StoreService {
         } else { // store를 거리순으로 정렬
             storeList = storeRepository.findByLocationOrderByDistance(userLocation, meterRange);
         }
+        return StoreListResponseDto.fromStoreList(storeList);
+    }
+
+    // 사용자 위치 기반 맛집 추천 목록
+    @Transactional(readOnly = true)
+    public StoreListResponseDto findRecommendStores(double lon, double lat, double range) {
+        Point userLocation = geometryFactory.createPoint(new Coordinate(lon, lat)); // 사용자의 경도, 위도를 Point 데이터 타입으로 변경
+        userLocation.setSRID(4326); // SRID 4326 (WGS 84 좌표계)로 설정
+        List<Store> storeList = storeRepository.findRecommendStores(userLocation); // 기본적으로 거리순으로 정렬되어 반환됨
         return StoreListResponseDto.fromStoreList(storeList);
     }
 
