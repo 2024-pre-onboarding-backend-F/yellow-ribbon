@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -39,14 +40,23 @@ public class User implements UserDetails {
     @Column(name = "recommend")
     private boolean recommend;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name="social_type", length = 10)
+    private SocialType socialType;
+
+    @Column(name="reg_time")
+    private LocalDateTime regTime;
+
     @Builder
-    public User(UUID userId, String id, String password, double lat, double lon, boolean recommend) {
+    public User(UUID userId, String id, String password, double lat, double lon, boolean recommend, SocialType socialType) {
         this.userId = userId;
         this.id = id;
         this.password = password;
         this.lat = lat;
         this.lon = lon;
         this.recommend = recommend;
+        this.socialType = socialType;
+        this.regTime = LocalDateTime.now();
     }
 
     @Override

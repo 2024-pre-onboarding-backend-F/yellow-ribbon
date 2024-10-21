@@ -73,14 +73,23 @@ public class UserService {
     }
 
     @Transactional
-    public UserLoginResponseDto login(UserLoginRequestDto requestDto) {
-        // 사용자 조회
-        User user = userRepository.findById(requestDto.getId())
-                .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
+    public LoginResponseDto login(LoginRequestDto requestDto) {
+        User user;
 
-        // 비밀번호 검증
-        if (!bCryptPasswordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("Invalid password");
+        if (requestDto.getSocialType() != null) {
+            // 소셜 로그인 처리 (KAKAO 등)
+            user = userRepository.findByIdAndSocialType(requestDto.getId(), requestDto.getSocialType())
+                    .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
+        } else {
+            // 일반 로그인 처리 (SocialType 없이)
+            // 사용자 조회 (String 타입의 ID와 소셜 타입으로 조회)
+            user = (User) userRepository.findById(requestDto.getId())
+                    .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
+
+            // 비밀번호 검증(소셜 로그인은 비밀번호 검증 생략)
+            if (!bCryptPasswordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+                throw new IllegalArgumentException("Invalid password");
+            }
         }
 
         // JWT 토큰 발급
@@ -91,6 +100,6 @@ public class UserService {
         tokenService.saveRefreshToken(user, refreshToken);
 
         // 응답 DTO 반환
-        return new UserLoginResponseDto(user.getUserId(), accessToken, refreshToken);
+        return new LoginResponseDto(user.getUserId(), accessToken, refreshToken);
     }
 }

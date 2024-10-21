@@ -30,13 +30,20 @@ repositories {
 }
 
 dependencies {
+    //PostGreSQL driver add
+    //runtimeOnly 'org.postgresql:postgresql'
+    // oauth2
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'io.jsonwebtoken:jjwt:0.9.1' // 자바 JWT 라이브러리
-    implementation 'javax.xml.bind:jaxb-api:2.3.1' // XML 문서와 Java 객체 간 매핑 자동화
-    testAnnotationProcessor('org.projectlombok:lombok')
+    // JsonObject
+    implementation 'com.googlecode.json-simple:json-simple:1.1'
+    // JWT
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    // XML 문서와 Java 객체 간 매핑 자동화
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
     //swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
     // Jackson
@@ -58,7 +65,6 @@ dependencies {
     implementation 'org.hibernate.orm:hibernate-spatial:6.2.9.Final' // Spring Boot 3.2.9는 Hibernate 6.2.x를 사용하기 때문에 버전을 맞춰서 사용해야함
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
@@ -66,6 +72,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework:spring-webflux'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testAnnotationProcessor('org.projectlombok:lombok')
 }
 
 /*tasks.named('test') {

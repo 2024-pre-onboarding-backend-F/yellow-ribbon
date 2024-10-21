@@ -12,7 +12,7 @@ public class SignUpUserRequest {
     @Size(max = 50)
     private String id;
 
-    @NotBlank
+//    @NotBlank
     @Size(max = 200)
     private String password;
 }
