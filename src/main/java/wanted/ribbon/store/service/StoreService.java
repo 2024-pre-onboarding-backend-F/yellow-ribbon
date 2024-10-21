@@ -79,7 +79,7 @@ public class StoreService {
 
         List<Store> storeList;
         if ("rating".equalsIgnoreCase(orderBy)) { // store를 평점순으로 정렬
-            storeList = storeRepository.findByLocationOrderByRating(userLocation, meterRange);
+            storeList = storeRepository.findStoresByUserLocationOrderByRating(userLocation, meterRange);
         } else { // store를 거리순으로 정렬
             storeList = storeRepository.findStoresByUserLocationOrderByDistance(userLocation, meterRange);
         }

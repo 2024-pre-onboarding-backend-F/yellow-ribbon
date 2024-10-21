@@ -33,7 +33,7 @@ public interface StoreRepository extends JpaRepository<Store, Long>, StoreReposi
     @Query("SELECT s FROM Store s " +
             "WHERE ST_Contains(ST_Buffer(:userLocation, :meterRange), s.location) " +
             "ORDER BY s.rating DESC") // 평점이 높은 순서로 정렬
-    List<Store> findByLocationOrderByRating(@Param("userLocation") Point userLocation, @Param("meterRange") double meterRange);
+    List<Store> findStoresByUserLocationOrderByRating(@Param("userLocation") Point userLocation, @Param("meterRange") double meterRange);
 
     // 사용자 위치 기반 맛집 추천 목록 - 평점과 리뷰 개수를 사용한 계산식이 3.0 이상인 맛집만 추천
     @Query("SELECT s FROM Store s " +
