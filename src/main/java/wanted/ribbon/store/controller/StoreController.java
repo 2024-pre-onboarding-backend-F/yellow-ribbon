@@ -33,7 +33,11 @@ public class StoreController {
     }
 
     @GetMapping("/{storeId}")
-    public ResponseEntity<StoreDetailResponseDto> getStoreDetail(@PathVariable Long storeId) {
+    @Operation(summary = "맛집 상세 정보 조회", description = "맛집 상세 정보 조회 시 사용하는 API\n" +
+            "- 맛집 모든 필드와 맛집의 평가 상세 리스트 포함")
+    @ApiResponse(responseCode = "200", description = "OK")
+    public ResponseEntity<StoreDetailResponseDto> getStoreDetail(
+            @Parameter(description = "조회할 맛집 식별번호") @PathVariable Long storeId) {
         StoreDetailResponseDto responseDto = storeService.getStoreDetail(storeId);
         return ResponseEntity.ok().body(responseDto);
     }
@@ -56,6 +60,8 @@ public class StoreController {
     }
 
     @GetMapping("/rising")
+    @Operation(summary = "인기 급상승 맛집 조회", description = "인기 급상승 맛집 조회 시 사용하는 API")
+    @ApiResponse(responseCode = "200", description = "OK")
     public ResponseEntity<RisingPopularStoreListResponseDto> getRisingPopularStoreList() {
         RisingPopularStoreListResponseDto responseDto = storeService.findRisingStores();
         return ResponseEntity.ok().body(responseDto);
