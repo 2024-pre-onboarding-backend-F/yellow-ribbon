@@ -22,10 +22,10 @@ public class UserService {
     private final TokenProvider tokenProvider;   // TokenProvider를 사용
     private final TokenService tokenService;     // TokenService를 사용
 
-    public SignUpResponse save(SignUpUserRequest dto){
+    public SignUpResponse save(SignUpRequest dto){
         User user = userRepository.save(User.builder()
-                .id(dto.getId())
-                .password(bCryptPasswordEncoder.encode(dto.getPassword())) // 패스워드 암호화
+                .id(dto.id())
+                .password(bCryptPasswordEncoder.encode(dto.password())) // 패스워드 암호화
                 .build());
 
         return  new SignUpResponse(
@@ -49,21 +49,21 @@ public class UserService {
     }
 
     @Transactional
-    public UpdateUserResponse updateUser(UUID userId, UpdateUserRequest request) {
+    public UpdateProfileResponse updateUser(UUID userId, UpdateProfileRequest request) {
         // 1. 유저 정보 조회
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
 
         // 2. 요청된 lat, lon, recommend 값으로 유저 객체 업데이트
-        user.setLat(request.getLat());
-        user.setLon(request.getLon());
-        user.setRecommend(request.isRecommend());
+        user.setLat(request.lat());
+        user.setLon(request.lon());
+        user.setRecommend(request.recommend());
 
         // 3. 변경된 유저 객체 저장
         User updatedUser = userRepository.save(user);
 
         // 4. UpdateUserResponse 생성 및 반환
-        return new UpdateUserResponse(
+        return new UpdateProfileResponse(
                 "위도, 경도, 추천 여부 변경 완료",
                 user.getUserId(),
                 user.getLat(),
@@ -73,21 +73,21 @@ public class UserService {
     }
 
     @Transactional
-    public LoginResponseDto login(LoginRequestDto requestDto) {
+    public LoginResponse login(LoginRequest requestDto) {
         User user;
 
-        if (requestDto.getSocialType() != null) {
+        if (requestDto.socialType() != null) {
             // 소셜 로그인 처리 (KAKAO 등)
-            user = userRepository.findByIdAndSocialType(requestDto.getId(), requestDto.getSocialType())
+            user = userRepository.findByIdAndSocialType(requestDto.id(), requestDto.socialType())
                     .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
         } else {
             // 일반 로그인 처리 (SocialType 없이)
             // 사용자 조회 (String 타입의 ID와 소셜 타입으로 조회)
-            user = (User) userRepository.findById(requestDto.getId())
+            user = (User) userRepository.findById(requestDto.id())
                     .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
 
             // 비밀번호 검증(소셜 로그인은 비밀번호 검증 생략)
-            if (!bCryptPasswordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+            if (!bCryptPasswordEncoder.matches(requestDto.password(), user.getPassword())) {
                 throw new IllegalArgumentException("Invalid password");
             }
         }
@@ -100,6 +100,6 @@ public class UserService {
         tokenService.saveRefreshToken(user, refreshToken);
 
         // 응답 DTO 반환
-        return new LoginResponseDto(user.getUserId(), accessToken, refreshToken);
+        return new LoginResponse(user.getUserId(), accessToken, refreshToken);
     }
 }

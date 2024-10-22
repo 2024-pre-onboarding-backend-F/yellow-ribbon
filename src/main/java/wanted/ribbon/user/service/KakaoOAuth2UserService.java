@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import wanted.ribbon.user.domain.SocialType;
-import wanted.ribbon.user.dto.LoginRequestDto;
+import wanted.ribbon.user.dto.LoginRequest;
 
 @RequiredArgsConstructor
 @Service
@@ -27,10 +27,10 @@ public class KakaoOAuth2UserService extends DefaultOAuth2UserService {
         String id = oAuth2User.getAttribute("id").toString();
 
         // 사용자 로그인 처리
-        LoginRequestDto loginRequestDto = userAuthService.loginUser(id, SocialType.KAKAO);
+        LoginRequest loginRequestDto = userAuthService.loginUser(id, SocialType.KAKAO);
 
         // UserDetails 객체 생성 (필요에 따라)
-        UserDetails userDetails = new CustomUserDetail(loginRequestDto.getId());
+        UserDetails userDetails = new CustomUserDetail(loginRequestDto.id());
 
         // Authentication 객체 생성
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
