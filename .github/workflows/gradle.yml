@@ -63,12 +63,12 @@ jobs:
           echo "Pulling Docker image"
           docker pull ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA
           echo "Stopping existing container"
-          CONTAINER_ID=$(docker ps -q --filter "name=yellow-ribbon")
-          if [ -n "$CONTAINER_ID" ]; then
-            docker stop $CONTAINER_ID
-            docker rm $CONTAINER_ID
+          if docker ps -q --filter "name=yellow-ribbon" | grep -q .; then
+            docker stop yellow-ribbon
+            docker rm yellow-ribbon
           fi
           echo "Running new container"
           docker run -d --name yellow-ribbon --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA
           echo "Cleaning up unused images"
           docker image prune -a -f
+                      
