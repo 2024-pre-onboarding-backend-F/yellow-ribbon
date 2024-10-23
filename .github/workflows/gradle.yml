@@ -45,7 +45,7 @@ jobs:
 
     - name: Docker build and push
       run: |
-        COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
+        COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7 | tr '[:upper:]' '[:lower:]' | tr -dc 'a-z0-9')
         echo "Commit SHA: $COMMIT_SHA"
         echo "Docker Username: ${{ secrets.DOCKER_USERNAME }}"
         docker build -t ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA .
