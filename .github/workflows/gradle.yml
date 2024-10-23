@@ -58,7 +58,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           echo "GITHUB_SHA: $GITHUB_SHA"
-          COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7 | tr '[:upper:]' '[:lower:]' | tr -dc 'a-z0-9')
+          COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7 | tr '[:upper:]' '[:lower:]' | tr -dc 'a-z')
           echo "COMMIT_SHA: $COMMIT_SHA"
           echo "서버에서 Docker 이미지를 가져오는 중..."
           if ! docker pull ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA; then
