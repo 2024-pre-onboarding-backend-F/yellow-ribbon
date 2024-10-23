@@ -48,7 +48,6 @@ jobs:
         docker build --no-cache -t app .
         docker tag app ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA
         docker push ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA
-        docker push ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest
 
     - name: Deploy
       uses: appleboy/ssh-action@master
@@ -63,7 +62,7 @@ jobs:
           echo "Stopping existing container"
           sudo docker stop $(docker ps -q --filter "name=yellow-ribbon")  true
           echo "Removing existing container"
-          sudo docker rm yellow-ribbon  true
+          sudo docker rm yellow-ribbon || true
           echo "Running new container"
           sudo docker run -d --name yellow-ribbon --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA
           echo "Cleaning up unused images"
