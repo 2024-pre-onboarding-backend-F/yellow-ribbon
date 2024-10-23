@@ -47,6 +47,7 @@ jobs:
       run: |
         COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
         echo "Commit SHA: $COMMIT_SHA"
+        echo "Docker Username: ${{ secrets.DOCKER_USERNAME }}"
         docker build -t ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA .
         docker push ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA
         docker tag ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest
