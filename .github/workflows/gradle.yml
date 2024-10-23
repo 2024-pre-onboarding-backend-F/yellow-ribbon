@@ -47,11 +47,17 @@ jobs:
       run: |
         COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
         echo "Commit SHA: $COMMIT_SHA"
-        echo "Docker Username: ${{ secrets.DOCKER_USERNAME }}"
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA .
-        docker push ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA
-        docker tag ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest
-        docker push ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest
+        
+        echo "Building Docker image..."
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA . || exit 1
+        
+        echo "Pushing Docker image with commit SHA tag..."
+        docker push ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA || exit 1
+        
+        echo "Tagging Docker image as latest..."
+        docker tag ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest || exit 1
+        echo "Pushing latest Docker image..."
+        docker push ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest || exit 1
 
     - name: Deploy
       uses: appleboy/ssh-action@master
@@ -61,14 +67,17 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          echo "Pulling Docker image"
-          docker pull ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA || exit 1
-          echo "Stopping existing container"
+          echo "Pulling Docker image on server..."
+          docker pull ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA || { echo "Failed to pull image"; exit 1; }
+          
+          echo "Stopping existing container..."
           if docker ps -q --filter "name=yellow-ribbon" | grep -q .; then
-            docker stop yellow-ribbon || exit 1
-            docker rm yellow-ribbon || exit 1
+            docker stop yellow-ribbon || { echo "Failed to stop container"; exit 1; }
+            docker rm yellow-ribbon || { echo "Failed to remove container"; exit 1; }
           fi
-          echo "Running new container"
-          docker run -d --name yellow-ribbon --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA || exit 1
-          echo "Cleaning up unused images"
-          docker image prune -a -f || exit 1
+          
+          echo "Running new container..."
+          docker run -d --name yellow-ribbon --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA || { echo "Failed to start container"; exit 1; }
+          
+          echo "Cleaning up unused images..."
+          docker image prune -a -f || { echo "Failed to clean up images"; exit 1; }
