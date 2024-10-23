@@ -53,35 +53,48 @@ public class StoreService {
     }
 
     /**
-     * 위도, 경도에서 첫 번째 소수점 자리는 최대 11.1km, 두 번째 소수점 자리는 1.1 km, 세 번째 소수점 자리는 110m 이다.
-     * 여섯 번째 자리는 11cm를 나타내기에 보통 위도, 경도를 소수 6자리까지 나타내고, 계산해도 큰 오차가 없다.
+     * 경도, 위도에서 첫 번째 소수점 자리는 최대 11.1km, 두 번째 소수점 자리는 1.1 km, 세 번째 소수점 자리는 110m 이다.
+     * 여섯 번째 자리는 11cm를 나타내기에 보통 경도, 위도를 소수 6자리까지 나타내고, 계산해도 큰 오차가 없다.
      *
-     * @param lat     위도 (가로)
-     * @param lon     경도 (세로)
-     * @param range   위도, 경도로 지정한 위치 주변의 검색할 범위 설정 값 (단위는 km이며, range 1.0은 1km이다.)
-     * @param orderBy store 데이터 정렬 기준 (거리순과 평점순 2가지)
+     * @param lon     경도 (세로선=동서) (경도 범위 : -180 ~ 180)
+     * @param lat     위도 (가로선=남북) (위도 범위 : -90 ~ 90)
+     * @param range   경도, 위도로 지정한 위치 주변의 검색할 범위 값 (단위는 km 이며, range 1.0은 1km 이다.)
+     * @param orderBy store 맛집 데이터 정렬 기준 2가지 : 거리순(distance,기본값) or 평점순(rating)
      */
-    public StoreListResponseDto findStores(double lat, double lon, double range, String orderBy) {
-        // 위도, 경도의 계산을 위해 km를 m로 변환
+    @Transactional(readOnly = true)
+    public StoreListResponseDto findStores(double lon, double lat, double range, String orderBy) {
+        // 경도, 위도의 계산을 위해 km를 m로 변환
         double meterRange = range * 1000;
         // bbox를 구하는 4 모서리 좌표 계산에 활용하기 위해 반으로 나눔
         double moveRange = meterRange / 2;
-        // 위도, 경도에서 0.01도는 1100m인 것을 사용해 몇 m는 위도, 경도로 어느 정도인지 계산
+        // 경도, 위도에서 0.01도는 1100m인 것을 사용해 몇 m는 위도, 경도로 어느 정도인지 계산
         double meterToDegree = moveRange * 0.01 / 1100; // 0.01 : 1100 = meterToDegree : moveRange(몇 m)
         // 1. 기존 방식 - QueryDsl을 사용한 방법
 //        List<Store> storeList = storeRepository.findAllStores(lat, lon, meterToDegree, meterRange, orderBy);
 
         // 2. 리팩토링 방식 - 공간 함수를 사용한 JPQL 쿼리 방법
-        // 사용자의 위도, 경도를 Point 데이터 타입으로 변경
+        // 사용자의 경도, 위도를 Point 데이터 타입으로 변경
         Point userLocation = geometryFactory.createPoint(new Coordinate(lon, lat));
         userLocation.setSRID(4326); // SRID 4326 (WGS 84 좌표계)로 설정
 
         List<Store> storeList;
         if ("rating".equalsIgnoreCase(orderBy)) { // store를 평점순으로 정렬
-            storeList = storeRepository.findByLocationOrderByRating(userLocation, meterRange);
+            storeList = storeRepository.findStoresByUserLocationOrderByRating(userLocation, meterRange);
         } else { // store를 거리순으로 정렬
-            storeList = storeRepository.findByLocationOrderByDistance(userLocation, meterRange);
+            storeList = storeRepository.findStoresByUserLocationOrderByDistance(userLocation, meterRange);
         }
+        return StoreListResponseDto.fromStoreList(storeList);
+    }
+
+    // 사용자 위치 기반 맛집 추천 목록
+    @Transactional(readOnly = true)
+    public StoreListResponseDto findRecommendStores(double lon, double lat, double range) {
+        Point userLocation = geometryFactory.createPoint(new Coordinate(lon, lat)); // 사용자의 경도, 위도를 Point 데이터 타입으로 변경
+        userLocation.setSRID(4326); // SRID 4326 (WGS 84 좌표계)로 설정
+        // 1. 기존 방식 - JPQL 쿼리 방법
+//        List<Store> storeList = storeRepository.findRecommendStores(userLocation); // 기본적으로 거리순으로 정렬되어 반환됨
+        // 2. 리팩토링 방식 - QueryDsl을 사용한 방법 (리팩토링 이유 : where 절의 조건이 복잡해서)
+        List<Store> storeList = storeRepository.findAllRecommendStores(userLocation);
         return StoreListResponseDto.fromStoreList(storeList);
     }
 

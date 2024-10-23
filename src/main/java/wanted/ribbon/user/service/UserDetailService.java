@@ -17,7 +17,7 @@ public class UserDetailService implements UserDetailsService {
     // 사용자 계정(id)로 사용자의 정보를 가져오는 메서드
     @Override
     public User loadUserByUsername(String id){
-        return userRepository.findById(id)
+        return (User) userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
     }
 }
