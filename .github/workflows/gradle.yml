@@ -79,4 +79,3 @@ jobs:
 
           echo "Cleaning up unused images..."
           docker image prune -a -f || { echo "Failed to clean up images"; exit 1; }
-
