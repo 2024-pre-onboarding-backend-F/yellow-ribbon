@@ -57,29 +57,30 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
+          echo "GITHUB_SHA: $GITHUB_SHA"
           COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7 | tr '[:upper:]' '[:lower:]' | tr -dc 'a-z0-9')
           echo "COMMIT_SHA: $COMMIT_SHA"
-          echo "Pulling Docker image on server..."
+          echo "서버에서 Docker 이미지를 가져오는 중..."
           if ! docker pull ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA; then
-            echo "Failed to pull image"; exit 1;
+            echo "이미지 가져오기 실패"; exit 1;
           fi
-
-          echo "Stopping existing container..."
+          
+          echo "기존 컨테이너 중지 중..."
           if docker ps -q --filter "name=yellow-ribbon" | grep -q .; then
             if ! docker stop yellow-ribbon; then
-              echo "Failed to stop container"; exit 1;
+              echo "컨테이너 중지 실패"; exit 1;
             fi
             if ! docker rm yellow-ribbon; then
-              echo "Failed to remove container"; exit 1;
+              echo "컨테이너 제거 실패"; exit 1;
             fi
           fi
-
-          echo "Running new container..."
+          
+          echo "새 컨테이너 실행 중..."
           if ! docker run -d --name yellow-ribbon --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA; then
-            echo "Failed to start container"; exit 1;
+            echo "컨테이너 시작 실패"; exit 1;
           fi
-
-          echo "Cleaning up unused images..."
+          
+          echo "사용하지 않는 이미지 정리 중..."
           if ! docker image prune -a -f; then
-            echo "Failed to clean up images"; exit 1;
+            echo "이미지 정리 실패"; exit 1;
           fi
