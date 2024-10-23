@@ -39,7 +39,7 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7 | tr '[:upper:]' '[:lower:]' | tr -dc 'a-z')
+        COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7 | tr '[:upper:]' '[:lower:]' | tr -dc 'a-z0-9')
         echo "Commit SHA: $COMMIT_SHA"
 
         docker build -t ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA .
@@ -58,10 +58,10 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           echo "GITHUB_SHA: $GITHUB_SHA"
-          COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7 | tr '[:upper:]' '[:lower:]' | tr -dc 'a-z')
+          COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7 | tr '[:upper:]' '[:lower:]' | tr -dc 'a-z0-9')
           echo "COMMIT_SHA: $COMMIT_SHA"
           echo "서버에서 Docker 이미지를 가져오는 중..."
-          if ! docker pull ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA; then
+          if ! docker pull ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest; then
             echo "이미지 가져오기 실패"; exit 1;
           fi
           
@@ -76,7 +76,7 @@ jobs:
           fi
           
           echo "새 컨테이너 실행 중..."
-          if ! docker run -d --name yellow-ribbon --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA; then
+          if ! docker run -d --name yellow-ribbon --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest; then
             echo "컨테이너 시작 실패"; exit 1;
           fi
           
