@@ -15,7 +15,6 @@ import wanted.ribbon.user.domain.User;
 import wanted.ribbon.user.repository.UserRepository;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class ReviewService {
     public CreateReviewResponseDto createReview(Long storeId, String id, CreateReviewRequestDto requestDto) {
         Store store = storeRepository.findByStoreId(storeId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.STORE_NOT_FOUND));
-        User user = userRepository.findById(id)
+        User user = (User) userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ENTITY_NOT_FOUND));
 
         Review review = Review.builder()
