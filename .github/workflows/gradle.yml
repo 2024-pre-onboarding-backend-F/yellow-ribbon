@@ -10,8 +10,6 @@ name: JAVA CI with Gradle
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
@@ -21,9 +19,9 @@ jobs:
       contents: read
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
     - name: Set up JDK 17
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
@@ -46,9 +44,9 @@ jobs:
       run: |
         echo $DOCKER_TOKEN | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker build -t app .
-        docker tag app ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest
-        docker push ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest
+        docker build --no-cache -t app .
+        docker tag app ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA
+        docker push ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA
 
     - name: Deploy
       uses: appleboy/ssh-action@master
@@ -58,8 +56,9 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest
+          COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA
           sudo docker stop $(docker ps -q --filter "name=yellow-ribbon")
           sudo docker rm yellow-ribbon || true
-          sudo docker run -d --name yellow-ribbon --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:latest
+          sudo docker run -d --name yellow-ribbon --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/yellow-ribbon:$COMMIT_SHA
           sudo docker image prune -a -f
