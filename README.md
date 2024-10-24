@@ -251,7 +251,7 @@ src
 <img alt="서비스 아키텍쳐" src="https://github.com/user-attachments/assets/ba43a837-28ff-432b-9869-03f82e02c582" width="80%" height="100%">
 
 ### 배포 이미지
-<img alt="배포 움짤" src="https://media.discordapp.net/attachments/1282926803882741774/1298596580005249035/yellow-ribbon.GIF?ex=671a23cf&is=6718d24f&hm=c87d4e9c80f1355f118fd31424bc3627861c59426056b4d5aa83f764f22c02f2&=&width=826&height=620" width="80%" height="100%">
+<img alt="배포gif" src="https://github.com/user-attachments/assets/cc6bd6c5-485b-4ed7-8824-bdd18e41ab84" width="80%" height="100%">
 <img alt="Swagger API 캡쳐 전체" src="https://github.com/user-attachments/assets/0a5f3657-2057-4a29-9dea-d9c0f7188f73" width="80%" height="100%">
 
 ## 📑 구현 내용
