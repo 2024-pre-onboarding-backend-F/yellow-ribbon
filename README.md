@@ -259,7 +259,7 @@ src
 - 일반 로그인/회원가입 기능
 - 카카오 로그인/회원가입 기능
 - Access 및 Refresh Token 생성
-- 경도 및 위도, 점심 추천 프로필 기능
+- 경도 및 위도, 점심 추천 프로필(정보 업데이트/조회) 기능
 
 ### 데이터 파이프라인
 - 데이터 파이프라인은 자동화 시스템을 통해 처리
@@ -311,7 +311,7 @@ src
 | 유저 | 토큰 생성 | `POST` | `/api/users/token` | 김영주 |
 | 유저 | 사용자 회원가입 | `POST` | `/api/users/signup` | 김영주 |
 | 유저 | 사용자 로그인 | `POST` | `/api/users/login` | 김영주 |
-| 유저 | 사용자 프로필 확인 | `GET` | `/api/users/login` | 김영주 |
+| 유저 | 사용자 프로필 확인 | `GET` | `/api/users/profile/{userId}` | 김영주 |
 | 유저 | 사용자 카카오톡 회원가입 | `GET` | `/api/oauth/kakao/login` | 김영주 |
 | 맛집 조회 | 시군구 목록 조회 | `GET` | `/api/city` | 이지원 |
 | 맛집 조회 | 맛집 상세 정보 조회 | `GET` | `/api/stores/:storeId` | 이지원 |
