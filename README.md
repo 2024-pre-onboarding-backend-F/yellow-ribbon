@@ -678,9 +678,8 @@ public class DataPipeJobScheduler {
 ```
 
 ### **결과**
-- path() 메서드를 적절히 사용하여 JSON 데이터를 안전하게 파싱
-- Null 안전성 확보: path() 메서드는 키가 없을 경우 MissingNode를 반환하여 NPE를 방지
-- 기본값 처리: asText(), asLong() 등의 메서드는 해당 노드가 없거나 변환할 수 없는 경우 각각의 기본값(빈 문자열, 0 등)을 반환
+- 메타테이블 성공적으로 생성
+- 여러 개의 Job이 스케줄러 설정에 맞게 성공적으로 실행
 </details>
 
 ### 이지원
