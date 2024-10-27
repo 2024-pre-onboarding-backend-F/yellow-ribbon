@@ -3,19 +3,19 @@
 # Yellow-Ribbon
 
 ### ✨ Backend TechStack ✨
-![Java](https://img.shields.io/badge/-Java-FF7800?style=flat&logo=Java&logoColor=white)
-![SpringBoot](https://img.shields.io/badge/-SpringBoot-6DB33F?style=flat&logo=SpringBoot&logoColor=white)
-![SpringDataJPA](https://img.shields.io/badge/SpringDataJpa-236DB33F?style=flat&logo=spring&logoColor=white)
-![SpringSecurity](https://img.shields.io/badge/Spring%20Security-6DB33F?style=flat&logo=Spring%20Security&logoColor=white)
-![SpringBatch](https://img.shields.io/badge/SpringBatch-%236DB33F.svg?style=for-the-flat&logo=spring&logoColor=white)
+![Java](https://img.shields.io/badge/-Java%2017-FF7800?style=flat&logo=Java&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/-Spring%20Boot%203-6DB33F?style=flat&logo=SpringBoot&logoColor=white)
+![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20Jpa-236DB33F?style=flat&logo=spring&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F?style=flat&logo=Spring%20Security&logoColor=white)
+![Spring Batch](https://img.shields.io/badge/Spring%20Batch-%236DB33F.svg?style=for-the-flat&logo=spring&logoColor=white)
 ![Querydsl](https://img.shields.io/badge/Querydsl-EB5424?style=flat&logo=auth0&logoColor=white)
 </br>
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white)
-![Redis](https://img.shields.io/badge/redis-FF4438?style=flat&logo=redis&logoColor=white)
-![Amazonrds](https://img.shields.io/badge/amazonRDS-527FFF?style=flat&logo=amazonrds&logoColor=white)
-![Amazon ec2](https://img.shields.io/badge/amazonEC2-FF9900?style=flat&logo=amazonec2&logoColor=white)
-![Docker](https://img.shields.io/badge/docker-2496ED?style=flat&logo=docker&logoColor=white)
-![Githubactions](https://img.shields.io/badge/githubactions-2088FF?style=flat&logo=githubactions&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-FF4438?style=flat&logo=redis&logoColor=white)
+![Amazon RDS](https://img.shields.io/badge/Amazon%20RDS-527FFF?style=flat&logo=amazonrds&logoColor=white)
+![Amazon EC2](https://img.shields.io/badge/Amazon%20EC2-FF9900?style=flat&logo=amazonec2&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
+![Github Actions](https://img.shields.io/badge/Github%20Actions-2088FF?style=flat&logo=githubactions&logoColor=white)
 
 ### 🍀 서비스 개요 🍀
 공공데이터를 활용한 위치 기반 지역 음식점 조회 및 추천 서비스 옐로리본(Yellow Ribbon) </br>
