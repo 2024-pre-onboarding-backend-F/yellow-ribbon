@@ -684,21 +684,39 @@ public class DataPipeJobScheduler {
 
 ### 이지원
 <details>
-<summary><strong>⚡ JPQL 사용 시 데이터 조회 개수 설정</strong></summary>
+<summary><strong>⚡ EC2 환경에서 Redis Docker 컨테이너와 Spring Boot 연결 오류</strong></summary>
 <div markdown="1">
 
 ### **문제 상황**
- - 인기 맛집 조회를 구현했으나 조회 개수 설정이 작동하지 않은 상황
+ - EC2 배포 환경에서 Redis cache를 사용한 API 요청 날릴 경우 500 에러 발생과 함께 Connection refused 오류 발생
+   <img width="800" alt="2024-10-28_10 10 41" src="https://github.com/user-attachments/assets/add3abf2-876a-44b4-8d92-e426b3a28648">
 
 ### **원인 분석**
-- `@Query`어노테이션을 사용해서 메서드명 `findTop`이 작동하지 않음
+1. redis 비밀번호 설정 문제
+2. redis host 설정 문제
 
 ### **해결 과정**
-1. `Pageable` 인터페이스를 사용
-2. 원하는 조회 개수를 `PageRequest`로 `Pageable`에 담아 조회
+1. redis 비밀번호를 설정해주지 않아서 application-secret.yml에 redis 비밀번호 설정을 해준 후 다시 배포함
+    
+    ```yaml
+      data:
+        redis:
+          password: [redis 비밀번호]
+    ```
+    
+    ➡️ 그러나 설정해준 후 다시 API 요청 보내도 **똑같은 오류 발생** </br>
+2. 로컬 환경에서는 잘 작동하지만 EC2 환경에서는 오류가 나는 것이라면 host 문제일 수 있다고 생각함 → EC2 인스턴스 내부에서 redis 컨테이너를 사용하기 때문에, redis host를 EC2 IP로 설정 후 다시 배포함
+    
+    ```yaml
+      data:
+        redis:
+          password: [redis 비밀번호]
+          host: [EC2 IP]
+    ```
+    
 
 ### **결과**
-- 원하는 개수만큼 조회 성공
+- redis cache를 사용한 API 정상 작동
 </details>
 
 ### 정진희
