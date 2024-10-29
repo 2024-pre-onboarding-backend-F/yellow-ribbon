@@ -726,23 +726,27 @@ public class DataPipeJobScheduler {
 
 ### 정진희
 <details>
-<summary><strong>⚡ Point 자료형의 거리 계산할 때 SRID 설정</strong></summary>
+<summary><strong>⚡ Point 자료형과 공간 함수를 사용할 때 SRID 설정</strong></summary>
 <div markdown="1">
 
 ### **문제 상황**
-- 오류 메시지
-    java.sql.SQLException: Binary geometry function st_distance given two geometries of different srids: 4326 and 0, which should have been identical.
+오류 메시지</br>
+java.sql.SQLException: Binary geometry function st_contains given two geometries of different srids: 0 and 4326, which should have been identical
     
 ### **원인 분석**
-- 이 오류는 **`ST_DISTANCE` 함수**를 사용할 때 두 `geometry` 객체의 SRID(Spatial Reference System Identifier)가 서로 다르기 때문에 발생합니다. 즉, **`location`** 필드의 SRID와 `myLocation`의 SRID가 일치하지 않는 경우입니다.
+쿼리에서는 공간 함수(ST_Contains, ST_Distance)와 location, myLocation을 사용해서 사용자의 위치와 맛집의 거리를 구한다.</br>
+해당 오류는 `ST_Contains` 함수가 **SRID가 다른 두 개의 geometry 객체를 비교하려고 할 때 발생하는 오류**이다.</br>
+`ST_Contains` 함수는 두 geometry가 동일한 SRID(Spatial Reference System Identifier)를 가지고 있어야 작동한다.</br>
+이런 경우 어떤 geometry의 SRID는 4326으로 설정됐지만, 다른 하나의 SRID는 0으로 되어 있어 오류가 발생한다.
 
 ### **해결 과정**
-- location 필드에는 SRID가 설정되어 있지만 myLocation 필드에는 SRID를 설정하지 않았다.
+Store 엔티티 파일에서 location 필드를 정의할 때 SRID를 4326으로 설정했다.</br>
+하지만 StoreService 파일에서 myLocation 인스턴스를 정의할 때 SRID 설정이 누락되어 있어, 아래 코드와 같이 SRID를 설정해 주었다.
 
 ### **결과**
 ```java
 Point myLocation = geometryFactory.createPoint(new Coordinate(lon, lat));
-// 아래 부분을 추가해주니까 해결됨
+// 아래 설정을 추가하여 문제 해결
 myLocation.setSRID(4326); // SRID 4326 (WGS 84 좌표계)로 설정
 ```
 </details>
