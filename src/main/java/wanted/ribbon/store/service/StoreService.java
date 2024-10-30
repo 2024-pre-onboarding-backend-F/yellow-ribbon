@@ -65,10 +65,8 @@ public class StoreService {
     public StoreListResponseDto findStores(double lon, double lat, double range, String orderBy) {
         // 경도, 위도의 계산을 위해 km를 m로 변환
         double meterRange = range * 1000;
-        // bbox를 구하는 4 모서리 좌표 계산에 활용하기 위해 반으로 나눔
-        double moveRange = meterRange / 2;
         // 경도, 위도에서 0.01도는 1100m인 것을 사용해 몇 m는 위도, 경도로 어느 정도인지 계산
-        double meterToDegree = moveRange * 0.01 / 1100; // 0.01 : 1100 = meterToDegree : moveRange(몇 m)
+        double meterToDegree = meterRange * 0.01 / 1100; // 0.01 : 1100 = meterToDegree : meterRange(몇 m)
         // 1. 기존 방식 - QueryDsl을 사용한 방법
 //        List<Store> storeList = storeRepository.findAllStores(lat, lon, meterToDegree, meterRange, orderBy);
 
