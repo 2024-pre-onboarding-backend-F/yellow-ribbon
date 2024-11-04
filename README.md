@@ -311,20 +311,20 @@ src
 ### [🔗 Postman API 문서](https://documenter.getpostman.com/view/21360094/2sAY4rEQbJ)
 
 | **대분류** | **기능** | **Method** | **URL** | **담당자** |
-| --- | --- | :---: | :--- | --- |
-| 유저 | 사용자 프로필 업데이트 | `PUT` | `/api/users/settings/{userId}` | 김영주 |
+| :---: | :---: | :---: | :--- | :---: |
+| 유저</br> | 사용자 프로필</br> 업데이트 | `PUT` | `/api/users/settings/{userId}` | 김영주 |
 | 유저 | 토큰 생성 | `POST` | `/api/users/token` | 김영주 |
 | 유저 | 사용자 회원가입 | `POST` | `/api/users/signup` | 김영주 |
 | 유저 | 사용자 로그인 | `POST` | `/api/users/login` | 김영주 |
-| 유저 | 사용자 프로필 확인 | `GET` | `/api/users/profile/{userId}` | 김영주 |
-| 유저 | 사용자 카카오톡 회원가입 | `GET` | `/api/oauth/kakao/login` | 김영주 |
-| 맛집 조회 | 시군구 목록 조회 | `GET` | `/api/city` | 이지원 |
-| 맛집 조회 | 맛집 상세 정보 조회 | `GET` | `/api/stores/:storeId` | 이지원 |
+| 유저 | 사용자 프로필</br> 확인 | `GET` | `/api/users/profile/{userId}` | 김영주 |
+| 유저 | 사용자 카카오톡</br> 회원가입 | `GET` | `/api/oauth/kakao/login` | 김영주 |
+| 맛집</br> 조회 | 시군구 목록 조회 | `GET` | `/api/city` | 이지원 |
+| 맛집</br> 조회 | 맛집 상세 정보</br> 조회 | `GET` | `/api/stores/:storeId` | 이지원 |
 | 평가 | 맛집 평가 생성 | `POST` | `/api/reviews/:storeId` | 이지원 |
-| 맛집 조회 | 인기 맛집 조회 | `GET` | `/api/stores/popular` | 이지원 |
-| 맛집 조회 | 인기 급상승 맛집 조회 | `GET` | `/api/stores/rising` | 이지원 |
-| 맛집 조회 | 사용자 위치 기반 맛집 조회 | `GET` | 거리순 : `/api/stores?lon=127.1108000763&lat=37.3503950812&range=1` <br/>평점순 : `/api/stores?lon=127.1108000763&lat=37.3503950812&range=1&orderBy=rating` | 정진희 |
-| 맛집 조회 | 사용자 위치 기반 맛집 추천 | `GET` | `/api/stores/recommend?lon=127.1108000763&lat=37.3503950812` | 정진희 |
+| 맛집</br> 조회 | 인기 맛집 조회 | `GET` | `/api/stores/popular` | 이지원 |
+| 맛집</br> 조회 | 인기 급상승</br> 맛집 조회 | `GET` | `/api/stores/rising` | 이지원 |
+| 맛집</br> 조회 | 사용자 위치 기반</br> 맛집 조회 | `GET` | 거리순 : `/api/stores?lon=127.1108000763&lat=37.3503950812&range=1`<br/> 평점순 : `/api/stores?lon=127.1108000763&lat=37.3503950812&range=1&orderBy=rating` | 정진희 |
+| 맛집</br> 조회 | 사용자 위치 기반</br> 맛집 추천 | `GET` | `/api/stores/recommend?lon=127.1108000763&lat=37.3503950812` | 정진희 |
 
 ## 🤔 고민 흔적
 ### 김영주
